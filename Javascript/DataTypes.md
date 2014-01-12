@@ -14,6 +14,7 @@
 
 - `typeof new Number // object`
 - `typeof null // object`
+- `typeof NaN // number`
 
 **The difference between `String value(primitive string)` and [String object](http://es5.github.io/#x4.3.16)**
 
