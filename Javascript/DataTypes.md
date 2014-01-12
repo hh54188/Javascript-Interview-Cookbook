@@ -2,7 +2,13 @@
 
 ## Contents
 
-## typeof
+## typeof && instanceof
+
+>Although typeofworks well for primitive values, it’s of little use for reference values
+
+>result = variable instanceof constructor
+
+>The instanceof operator returns true if the variable is an instance of the given reference type 
 
 **Something wrong with `typeof`**:
 
