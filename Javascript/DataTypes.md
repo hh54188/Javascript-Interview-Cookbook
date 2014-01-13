@@ -2,6 +2,11 @@
 
 ## Contents
 
+- [typeof && instanceof](#typeof--instanceof)
+- [Primitive](#primitive)
+- [Reference Types](#reference-types)
+- [Argument passing](#argument-passing)
+
 ## typeof && instanceof
 
 >Although typeofworks well for primitive values, it’s of little use for reference values
