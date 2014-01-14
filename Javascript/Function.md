@@ -2,6 +2,79 @@
 
 ## Contents
 
+
+- The execution context of a variable or function defines what other data it has access 
+to, as well as how it should behave.
+
+- Each execution context has an associated variable objectupon 
+which all of its defined variables and functions exist. 
+
+- When an execution 
+context has executed all of its code, it is destroyed, taking with it all of the variables and functions 
+defined within it
+
+执行环境/上下文，会随着函数的执行完毕而销毁
+
+- Each function call has its own execution context. Whenever code execution flows into a function, 
+the function’s context is pushed onto a context stack. After the function has finished executing,
+the stack is popped, returning control to the previously executing context.
+
+- When code is executed in a context, a scope chainof variable objects is created. 
+
+- The purpose of the 
+scope chain is to provide ordered access to all variables and functions that an execution context has 
+access to.
+
+- Each context can search up the scope chain for variables and 
+functions, but no context can search down the scope chain into another execution context.
+
+- The front of the scope chain is always the variable object of the context whose code is 
+executing.
+
+- If the context is a function, then the activation objectis used as the variable object.
+
+- The next variable object in the chain is from the containing context, and the next 
+after that is from the next containing context. 
+
+- Even though there are only two primary types of execution contexts, global and function (the 
+third exists inside of a call to eval())
+
+- When a function is called, an execution 
+context is created, and its scope chain is created. 
+
+- When compare()is defined, its scope chain is 
+created,  作用域到底是什么时候创建的？
+
+- When the function is called, an execution context is created and its scope chain is built up by 
+copying the objects in the function’s [[Scope]]property
+
+- A function that is defined inside another function adds the containing function’s activation object 
+into its scope chain. 
+
+------
+
+- If, in your global code you call a function, the sequence flow of your program enters the function being called, creating a new execution context and pushing that context to the top of the execution stack
+
+- So we now know that everytime a function is called, a new execution context is created.
+
+- every call to an execution context has 2 stages
+    - Creation Stage [when the function is called, but before it executes any code inside]:
+        - Create variables, functions and arguments.
+        - Create the Scope Chain.
+        - Determine the value of "this".
+    - Activation / Code Execution Stage:
+        - Assign values, references to functions and interpret / execute code.
+
+```
+executionContextObj = {
+    variableObject: { /* function arguments / parameters, inner variable and function declarations */ },
+    scopeChain: { /* variableObject + all parent execution context's variableObject */ },
+    this: {}
+}
+```
+
+
+
 ## Function Declaration
 
 - function declaration(**attention: function declaration hoisting**):
