@@ -5,7 +5,9 @@
 
 ## arguments
 
-arguments像数组(array-like)，但不是数组
+- arguments像数组(array-like)，但不是数组,`typeof arguments // object`
+
+- arguments也可以被重新赋值
 
 ## Function expression & Function declaration
 
@@ -35,6 +37,8 @@ a = 4 //4
 
 当函数定义时，无论你是用**函数表达式(function expression)**定义的函数，还是用**函数声明(function declaration)**定义的函数，这个函数都会获得当前执行上下文(execution context)中的scope chain，并且付给内置的**[[scope]]**属性
 
+而当它被执行时，首先会创建上下文，而上下文中的scope chain对象，就是内置的`[[scope]]`对象加上当前的`Variable Object`
+
 ###1. 当函数执行时：
 
 http://davidshariff.com/blog/what-is-the-execution-context-in-javascript/
@@ -59,7 +63,7 @@ http://www.jibbering.com/faq/notes/closures/#clIRExSc
 
 >The next step in the creation of the execution context for a function call **is the creation of an arguments object**, which is an array-like object with integer indexed members corresponding with the arguments passed to the function call, in order. It also has length and callee properties (which are not relevant to this discussion, see the spec for details). A property of the Activation object is created with the name "arguments" and a reference to the arguments object is assigned to that property.
 
-- **把参数(arguments)引用添加入Activation Object中**
+- **创建一个名为arguments的arguments object，把引用添加入Activation Object中**
 
 >**Next the execution context is assigned a scope**. A scope consists of a list (or chain) of objects. Each function object has an internal [[scope]] property (which we will go into more detail about shortly) that also consists of a list (or chain) of objects. The scope that is assigned to the execution context of a function call consists of the list referred to by the [[scope]] property of the corresponding function object **with the Activation object added at the front of the chain (or the top of the list).**
 
@@ -68,7 +72,32 @@ http://www.jibbering.com/faq/notes/closures/#clIRExSc
 >Then the process of "variable instantiation" takes place using an object that ECMA 262 refers to as the "Variable" object. However, **the Activation object is used as the Variable object (note this, it is important: they are the same object).** Named properties of the Variable object are created for each of the function's formal parameters, and if arguments to the function call correspond with those parameters the values of those arguments are assigned to the properties (otherwise the assigned value is undefined). **Inner function definitions are used to create function objects which are assigned to properties of the Variable object with names that correspond to the function name used in the function declaration. The last stage of variable instantiation is to create named properties of the Variable object that correspond with all the local variables declared within the function.**
 
 - 进入变量初始化阶段，Activation Object变身为Variable Object
-- 首先将**实参**赋值给Variable Object
+- 根据传入参数的实际情况，依次添加进VO中，如果arguments object中存在该属性，把值赋值给该属性，**实际参数始终是与arguments object分开来存储的**
+
+```
+fooExecutionContext = {
+    variableObject: {
+        arguments: {
+            0: 22,
+            length: 1
+        },
+        i: 22
+    },
+    scopeChain: { ... },
+    this: { ... }
+}
+
+```
+```
+// 对arguments重新赋值也不会影响实际参数
+function foo(i) {
+    arguments = [2];
+    console.log(i) // 22
+    console.log(arguments) // [2]
+}
+
+foo(22);
+```
 - 再把根据**函数定义**创建的**函数对象**赋值给Variable Object
 - 最后初始化变量(local variable)
 
@@ -77,120 +106,6 @@ http://www.jibbering.com/faq/notes/closures/#clIRExSc
 var a = 1;
 function a() {};
 typeof a // function
-```
-
-
----
-
-- arguments是对象而非数组(like-array) `typeof arguments;// Object`
-
-- 在函数表达式`var f = function g() {}`中，函数名g只对内部可见
-
-- The execution context of a variable or function defines what other data it has access 
-to, as well as how it should behave.
-
-- Each execution context has an associated variable objectupon 
-which all of its defined variables and functions exist. 
-
-- When an execution 
-context has executed all of its code, it is destroyed, taking with it all of the variables and functions 
-defined within it
-
-执行环境/上下文，会随着函数的执行完毕而销毁
-
-- Each function call has its own execution context. Whenever code execution flows into a function, 
-the function’s context is pushed onto a context stack. After the function has finished executing,
-the stack is popped, returning control to the previously executing context.
-
-- When code is executed in a context, a scope chainof variable objects is created. 
-
-- The purpose of the 
-scope chain is to provide ordered access to all variables and functions that an execution context has 
-access to.
-
-- Each context can search up the scope chain for variables and 
-functions, but no context can search down the scope chain into another execution context.
-
-- The front of the scope chain is always the variable object of the context whose code is 
-executing.
-
-- If the context is a function, then the activation objectis used as the variable object.
-
-- The next variable object in the chain is from the containing context, and the next 
-after that is from the next containing context. 
-
-- Even though there are only two primary types of execution contexts, global and function (the 
-third exists inside of a call to eval())
-
-- When a function is called, an execution 
-context is created, and its scope chain is created. 
-
-- When compare()is defined, its scope chain is 
-created,  作用域到底是什么时候创建的？
-
-- When the function is called, an execution context is created and its scope chain is built up by 
-copying the objects in the function’s [[Scope]]property
-
-- A function that is defined inside another function adds the containing function’s activation object 
-into its scope chain. 
-
-------
-
-- If, in your global code you call a function, the sequence flow of your program enters the function being called, creating a new execution context and pushing that context to the top of the execution stack
-
-- So we now know that everytime a function is called, a new execution context is created.
-
-- every call to an execution context has 2 stages
-    - Creation Stage [when the function is called, but before it executes any code inside]:
-        - Create variables, functions and arguments.
-        - Create the Scope Chain.
-        - Determine the value of "this".
-    - Activation / Code Execution Stage:
-        - Assign values, references to functions and interpret / execute code.
-
-```
-executionContextObj = {
-    variableObject: { /* function arguments / parameters, inner variable and function declarations */ },
-    scopeChain: { /* variableObject + all parent execution context's variableObject */ },
-    this: {}
-}
-```
-
-
-
-## Function Declaration
-
-- function declaration(**attention: function declaration hoisting**):
-
-```
-sayHi();
-function sayHi(){
-    alert(“Hi!”);
-}
-```
-
-- function expression
-
-```
-var sayHi = function () {
-    alert("Hi");
-}
-```
-##Scope Chain
-
-A variable defined in a function is not visible 
-outside the function, but a variable defined in a code block (an ifor a forloop) is 
-visible outside the block.
-
-##Lexical Scope 
-
-In JavaScript, functions have lexical scope. This means that functions create their 
-environment (scope) when they are defined, not when they are executed
-
-```
-function f1(){ var a = 1; f2(); }
-function f2(){return a;}
-f1(); //a is not defined
 ```
 
 ##Invoke
