@@ -101,6 +101,14 @@ Sentence.prototype.remove = function () {
 
 >系统的数据和行为都正常，都接口不符时，我们应该考虑用适配器
 
+```
+var Adapter = {
+    log: function () {
+        console.log(arguments);
+    }
+}
+```
+
 
 
 
