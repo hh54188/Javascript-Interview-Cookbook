@@ -21,10 +21,11 @@
 - Liskov替换原则： 子类必须能够替换其基类。这一思想体现为对继承机制的约束规范，只有子类能够替换基类时，才能保证系统在运行期内识别子类，这是保证继承复用的基础。
 
 ## Contents
-- Bridge Pattern
-- Facade Pattern
-- Composite Pattern
-- Adapter Patterns
+- [Bridge Pattern](#bridge-pattern)
+- [Facade Pattern](#facade-pattern)
+- [Composite Pattern](#composite-pattern)
+- [Adapter Patterns](#adapter-patterns)
+- [Decorator Pattern](#decorator-pattern)
 
 ## Bridge Pattern
 
@@ -108,6 +109,53 @@ var Adapter = {
     }
 }
 ```
+
+## Decorator Pattern
+
+动态的给一个对象添加一些额外的职责，就增加功能来说，装饰模式比生产子类更为灵活
+
+>They can be used to modify existing systems where we wish to add additional features to objects without the need to heavily modify the underlying code using them.
+
+非常简单的实现：
+
+```
+// The constructor to decorate
+function MacBook() {
+    this.cost = function () { return 997; };
+    this.screenSize = function () { return 11.6; };
+}
+ 
+// Decorator 1
+function Memory( macbook ) {
+    var v = macbook.cost();
+    macbook.cost = function() {
+        return v + 75;
+    };
+}
+ 
+// Decorator 2
+function Engraving( macbook ){
+    var v = macbook.cost();
+    macbook.cost = function(){
+        return  v + 200;
+    };
+}
+ 
+// Decorator 3
+function Insurance( macbook ){
+    var v = macbook.cost();
+    macbook.cost = function(){
+        return  v + 250;
+    };
+}
+ 
+var mb = new MacBook();
+Memory(mb);
+Engraving(mb);
+Insurance(mb);
+```
+
+**注意**，这样的实现是有问题的，它**破坏了开放封闭原则**，直接覆盖了实例的方法。具体实现可以参考`Pro Javscript Desgin Pattern`或者[这里](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#decoratorpatternjavascript);
 
 
 
