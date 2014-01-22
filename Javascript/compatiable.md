@@ -1,4 +1,17 @@
 
+## Node type 
+
+```
+if (someNode.nodeType == Node.ELEMENT_NODE){ //won’t work in IE < 9
+    alert(“Node is an element.”);
+}
+
+if (someNode.nodeType == 1){ //works in all browsers
+    alert(“Node is an element.”);
+}
+```
+
+
 ## focus && blur
 
 [A few events, most motably focus, blur, and change, do not bubble up the document tree. ](http://www.quirksmode.org/blog/archives/2008/04/delegating_the.html)
