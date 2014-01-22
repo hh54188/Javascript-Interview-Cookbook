@@ -10,6 +10,12 @@
 
 所以越学你会觉得他们越来越像
 
+## Categories Of Design Pattern
+
+- **Creational Design Patterns**: Creational design patterns focus on handling object creation mechanisms where objects are created in a manner suitable for the situation we're working in. 
+- **Structural Design Patterns**: Structural patterns are concerned with object composition and typically identify simple ways to realize relationships between different objects. 
+- **Behavioral Design Patterns**: Behavioral patterns focus on improving or streamlining the communication between disparate objects in a system.
+
 **区分的关键是了解并且熟悉他们的使用场景**
 
 ## 面向对象的五个原则
