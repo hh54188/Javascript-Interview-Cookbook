@@ -33,6 +33,7 @@
 - [Composite Pattern](#composite-pattern)
 - [Adapter Patterns](#adapter-patterns)
 - [Decorator Pattern](#decorator-pattern)
+- [Factory Pattern](#factory-pattern)
 
 ## Bridge Pattern
 
@@ -163,6 +164,22 @@ Insurance(mb);
 ```
 
 **注意**，这样的实现是有问题的，它**破坏了开放封闭原则**，直接覆盖了实例的方法。具体实现可以参考`Pro Javscript Desgin Pattern`或者[这里](http://addyosmani.com/resources/essentialjsdesignpatterns/book/#decoratorpatternjavascript);
+
+## Factory Pattern
+
+重点要区分：
+
+- 简单工厂
+- 工厂
+- 抽象工厂
+
+>This is particularly useful if the object creation process is relatively complex, e.g. if it strongly depends on dynamic factors or application configuration.
+
+>工厂方法模式，定义一个用于创建对象的接口，让子类决定实例化哪一个类。工厂方法使一个类的实例化延迟到其子类
+
+Javascript中没有接口（但是可以用类来代替）！很多的模式在Javascript中都违反了“开放-封闭”的原则，如果要复用就要修改类（或者用类来代替接口）！
+
+>工厂方法模式的实现时，客户端需要决定实例化哪一个工厂来实现运算类，选择判断的问题还是存在的，也就是说，工厂方法把简单工厂的内部逻辑判断移到了客户端代码来进行（这是与**与简单工厂最大的区别**），你想要加的功能，本来是修改工厂类的（**简单工厂方法**），而现在是修改客户端
 
 
 
