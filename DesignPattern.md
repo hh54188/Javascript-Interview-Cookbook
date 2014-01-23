@@ -9,6 +9,7 @@
 - 把接口**抽象**
 
 所以越学你会觉得他们越来越像
+**区分的关键是了解并且熟悉他们的使用场景**
 
 ## Categories Of Design Pattern
 
@@ -16,15 +17,15 @@
 - **Structural Design Patterns**: Structural patterns are concerned with object composition and typically identify simple ways to realize relationships between different objects. 
 - **Behavioral Design Patterns**: Behavioral patterns focus on improving or streamlining the communication between disparate objects in a system.
 
-**区分的关键是了解并且熟悉他们的使用场景**
+## 面向对象的五个原则([SOLID](http://en.wikipedia.org/wiki/SOLID_(object-oriented_design)))
 
-## 面向对象的五个原则
-
-- **单一职责原则**： 一个类，最好只做一件事，只有一个引起它的变化
-- **开放封闭原则**： 软件实体应该是可扩展的，而不可修改的。也就是，对扩展开放，对修改封闭的。能保持软件内部的封装体系稳定，不被需求的变化影响
-- **依赖倒置原则**： 具体而言就是高层模块不依赖于底层模块，二者都同依赖于抽象（接口）；抽象不依赖于具体，具体依赖于抽象。
-- **接口隔离原则**： 接口应该是内聚的，应该避免“胖”接口。一个类对另外一个类的依赖应该建立在最小的接口上，不要强迫依赖不用的方法，这是一种接口污染。
-- Liskov替换原则： 子类必须能够替换其基类。这一思想体现为对继承机制的约束规范，只有子类能够替换基类时，才能保证系统在运行期内识别子类，这是保证继承复用的基础。
+- **单一职责原则(Single responsibility principle)**： 一个类，最好只做一件事，只有一个引起它的变化
+- **开放封闭原则(Open/closed principle)**： 软件实体应该是可扩展的，而不可修改的。也就是，对扩展开放，对修改封闭的。能保持软件内部的封装体系稳定，不被需求的变化影响
+- **依赖倒置原则(Dependency inversion principle)**： 具体而言就是高层模块不依赖于底层模块，二者都同依赖于抽象（接口）；抽象不依赖于具体，具体依赖于抽象。
+- **接口隔离原则(Interface segregation principle)**： 接口应该是内聚的，应该避免“胖”接口。一个类对另外一个类的依赖应该建立在最小的接口上，不要强迫依赖不用的方法，这是一种接口污染。
+- Liskov替换原则(Liskov substitution principle)： 子类必须能够替换其基类。这一思想体现为对继承机制的约束规范，只有子类能够替换基类时，才能保证系统在运行期内识别子类，这是保证继承复用的基础。
+- 
+**每一次完成一种设计后，应该再想想，如果复用的话是否会违反以上规则**
 
 ## Contents
 - [Bridge Pattern](#bridge-pattern)
