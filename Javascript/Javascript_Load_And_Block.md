@@ -1,5 +1,15 @@
 # Load Javascript Without Blocking
 
+##目录
+
+- 载入脚本的方式
+    - 传统
+    - defer
+    - async
+    - dom element
+    - xhr
+- 实战情况
+
 ## 传统方式
 
 传统方式有什么问题：
@@ -128,8 +138,82 @@ xhr.onreadystatechange = function(){
 xhr.send(null);
 ```
 
-这种方法的主要优点是，您可以下载不立即执行的 JavaScript 代码。由于代码返回在\<scrip\>标签之外（换句话说不受\<script\>标签约束），它下载后不会自动执行，这使得您可以推迟执行，直到一切都准备好了。另一个优点是，同样的代码在所有现代浏览器中都不会引发异常。
+这种方法的主要优点是，您可以下载不立即执行的 JavaScript 代码。由于代码返回在`<scrip\`标签之外（换句话说不受`<script\`标签约束），它下载后不会自动执行，这使得您可以推迟执行，直到一切都准备好了。另一个优点是，同样的代码在所有现代浏览器中都不会引发异常。
 此方法最主要的限制是：JavaScript文件必须与页面放置在同一个域内，不能从CDN下载，所以大型网页通常不采用 XHR 脚本注入技术。
+
+## 实战情况
+
+我们以[sea.js](https://github.com/seajs/seajs), [require.js](https://github.com/jrburke/requirejs), [lab.js](https://github.com/getify/LABjs)为例
+
+从前面可以得知，**脚本的载入和执行是两件完全不同的事情**，普遍情况是，脚本的载入可以无序，但是执行必须是有序。按照labjs作者的[话说](http://blog.getify.com/labjs-script-loading-the-way-it-should-be/)，最理想的情况应该是
+
+>Understand that what’s at question is how to load 2 or more scripts, in parallel, but enforce the execution order, if there is a dependency between them. **And not just that, but to be able to load any scripts at any time, from anywhere, without modification of the script contents.**
+
+虽然之前有那么多的方法可以供选择（更多可以参考Steve Souder的[Loading Scripts Without Blocking](http://www.stevesouders.com/blog/2009/04/27/loading-scripts-without-blocking/)）。但至少这三个库而言，使用的解决方案都是dom element：
+
+- sea.js:
+
+```
+function request(url, callback, charset) {
+  var isCSS = IS_CSS_RE.test(url)
+  var node = doc.createElement(isCSS ? "link" : "script")
+
+  if (charset) {
+    var cs = isFunction(charset) ? charset(url) : charset
+    if (cs) {
+      node.charset = cs
+    }
+  }
+
+  addOnload(node, callback, isCSS, url)
+
+  if (isCSS) {
+    node.rel = "stylesheet"
+    node.href = url
+  }
+  else {
+    node.async = true
+    node.src = url
+  }
+  ......
+
+```
+
+- require.js:
+
+```
+/**
+ * Creates the node for the load command. Only used in browser envs.
+ */
+req.createNode = function (config, moduleName, url) {
+    var node = config.xhtml ?
+            document.createElementNS('http://www.w3.org/1999/xhtml', 'html:script') :
+            document.createElement('script');
+    node.type = config.scriptType || 'text/javascript';
+    node.charset = 'utf-8';
+    node.async = true;
+    return node;
+};
+// 但是它还判断了如果是webWorker的情况
+else if (isWebWorker) {
+            
+```
+
+- lab.js:
+
+可以参考labjs作者写的一篇解析文章：
+
+[LABjs: script loading the way it “should” be](http://blog.getify.com/labjs-script-loading-the-way-it-should-be/);
+
+它们同时使用dom element的好处是，保证了脚本的下载不会阻塞浏览器进程。
+
+但是执行顺序呢？执行是否会阻塞浏览器进程？
+
+答案是肯定的，从timeline中的evaluate script中就能看出来
+
+setPlay, ugcIndex的evaluate script耗时比较长的，建议放在后面
+
+qa，ver的evaluate script耗时比较短，可以放在前面
 
 
 
