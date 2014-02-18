@@ -94,3 +94,124 @@ btn.attachEvent(“onclick”, function(){
 - srcElement: same as the DOM target property
 
 The event handling function is referenced, not copied, **so the this keyword always refers to the window and is completely useless.**
+
+## Event Types
+
+**load**
+
+- Note that the element need not be added to the document for the image download to begin; it begins as soon as the srcproperty is set.
+
+- JavaScript files start downloading only after the srcproperty has been assigned and **the element has been added into the document**
+
+**unload**
+
+- Since the unloadevent fires after everything is unloaded, not all objects that were available when the page was loaded are still available. **Trying to manipulate the location of a DOM node or its appearance can result in errors.**
+
+**resize**
+
+- Explorer, Safari, Chrome, and Opera fire the resize event as soon as the browser is resized by one pixel and then repeatedly as the user resizes the browser window.
+
+- Firefox fires the resize event 
+only after the user has stopped resizing the browser. 
+
+**Scroll**
+
+- In quirks mode, the changes are observable using the `scrollLeft` and 
+`scrollTop` of the `<body>` element;
+
+- In standards mode, the changes occur on the `<html>`element in 
+all browsers
+
+- (In standards mode)Safari which still tracks scroll position on `<body>`.
+
+**Client Coordinates**
+
+**Page Coordinates**
+
+- The values for pageX and pageY are the same as clientX and clientY when the page is not scrolled.
+
+- Internet Explorer 8 and earlier don’t support page coordinates on the event object,The calculation is done as follows:
+
+```
+var div = document.getElementById(“myDiv”);
+EventUtil.addHandler(div, “click”, function(event){
+    event = EventUtil.getEvent(event);
+    var pageX = event.pageX,
+        pageY = event.pageY;
+
+    if (pageX === undefined){
+        pageX = event.clientX + (document.body.scrollLeft || 
+        document.documentElement.scrollLeft);
+    }
+
+    if (pageY === undefined){
+        pageY = event.clientY + (document.body.scrollTop || 
+        document.documentElement.scrollTop);
+    }
+
+    alert(“Page coordinates: “ + pageX + “,” + pageY); 
+});
+```
+
+**Screen Coordinates**
+
+**!!! focus & blur**
+
+[Delegating the focus and blur events: A few events, most motably focus, blur, and change, do not bubble up the document tree. ](http://www.quirksmode.org/blog/archives/2008/04/delegating_the.html)
+
+when you define event handlers in the capturing phase,the browser executes any and all event handlers set on ancestors of the event target whether the given event makes sense on these elements or not
+
+Unfortunately IE does not support event capturing, However, it supports the focusin and focusout events that do bubble up
+
+**focus和blur事件在w3c标准中，只能被捕获，而不能冒泡。但是IE不支持捕获，于是它的focusin和focusout是恰恰相反能支持冒泡。所以如果当发现用户绑定的是focusin和focusout时，要当做focus和blur处理**
+
+
+**!!! mouseover & mouseenter & crelatedTarget, fromElement, toElement**
+
+W3C added the relatedTarget property to mouseover and mouseout events. This contains the element the mouse came from in case of mouseover, or the element it goes to in case of mouseout.
+
+Microsoft created two properties to contain this information:
+
+- `fromElement` refers to the element the mouse comes from. This is interesting to know in case of mouseover.
+- `toElement` refers to the element the mouse goes to. This is interesting to know in case of mouseout.
+
+```
+body.mouseover = doSomething(e) {
+    if (!e) var e = window.event;
+    var relTarg = e.relatedTarget || e.fromElement;
+}
+```
+**mouseenter is better than mouseover**
+
+When the mouse cursor moves over the boundary from the parent to the child element, a mouseoutevent is triggered, even though we might consider the cursor to still
+be within the bounds of the parent element.
+
+**Solution**:
+
+```
+// 不理解
+var hover = function (elem, fn) { 
+    addEvent(elem, "mouseover", function (e) {
+        withinElement(this, e, "mouseenter", fn);
+    });
+    addEvent(elem, "mouseout", function (e) {
+        withinElement(this, e, "mouseleave", fn);
+    });
+};
+
+function withinElement(elem, event, type, handle) { 
+    var parent = event.relatedTarget; 
+    while (parent && parent != elem) { 
+        try {
+            parent = parent.parentNode;
+        } catch (e) { 
+            break;
+        }
+    }
+
+    if (parent != elem) { 
+        handle.call(elem, type);
+    }
+}
+```
+
