@@ -166,7 +166,14 @@ Unfortunately IE does not support event capturing, However, it supports the focu
 **focus和blur事件在w3c标准中，只能被捕获，而不能冒泡。但是IE不支持捕获，于是它的focusin和focusout是恰恰相反能支持冒泡。所以如果当发现用户绑定的是focusin和focusout时，要当做focus和blur处理**
 
 
-**!!! mouseover & mouseenter & crelatedTarget, fromElement, toElement**
+**!!! mouseover & mouseenter & relatedTarget, fromElement, toElement**
+
+- relatedTarget: This property contains a value only for the mouseoverand mouseoutevents; it is null for all other events.
+
+- fromElement: When the mouseover event fires, Internet Explorer provides a fromElement property containing the related element;
+
+- toElement: when the mouseout event fires, Internet Explorer provides a toElement property containing the related element (Internet Explorer 9 supports all properties).
+
 
 W3C added the relatedTarget property to mouseover and mouseout events. This contains the element the mouse came from in case of mouseover, or the element it goes to in case of mouseout.
 
@@ -215,3 +222,44 @@ function withinElement(elem, event, type, handle) {
 }
 ```
 
+**button**
+
+Internet Explorer through version 8 also provides a button property, but it has completely different values, as described here:
+
+- 0 indicates that no button has been pressed.
+- 1 indicates that the primary mouse button has been pressed.
+- 2 indicates that the secondary mouse button has been pressed.
+- 3 indicates that the primary and secondary buttons have been pressed.
+- 4 indicates that the middle button has been pressed.
+- 5 indicates that the primary and middle buttons have been pressed.
+- 6 indicates that the secondary and middle buttons have been pressed.
+- 7 indicates that all three buttons have been pressed.
+
+Internet Explorer provides the following additional information for each mouse event as well:
+
+- altLeft is a Boolean value indicating if the left Alt key is pressed. If altLeft is true then altKey is also true.
+- ctrlLeft is a Boolean value indicating if the left Ctrl key is pressed. If ctrlLeft is true then ctrlKeyis also true.
+- offsetXis the x-coordinate of the cursor relative to the boundaries of the target element.
+- offsetYis the y-coordinate of the cursor relative to the boundaries of the target element.
+- shiftLeft is a Boolean value indicating if the left Shift key is pressed. If shiftLeft is true, then shiftKey is also true.
+
+**Key Codes**
+
+the eventobject’s keyCodeproperty is filled in with a code that 
+maps to a specific key on the keyboard.
+
+For alphanumeric keys, the keyCode is the same as the ASCII value for the lowercase letter or number on that key, so the 7 key has a keyCodeof 55 and the A key has a keyCodeof 65, regardless of the state of the Shift key.
+
+**Character Codes**
+
+**When a keypressevent occurs, this means that the key affects the display of text on the screen. ** Internet Explorer 9+, Firefox, Chrome, and Safari support a property on the eventobject called 
+charCode, which is filled in only for the keypressevent and contains the ASCII code for the 
+character related to the key that was pressed.
+
+- key(DOM Level 3): When a character key is pressed, the value of keyis equal to the text character (for example, “k” or “M”); when a noncharacter key is pressed, the value of keyis the name of the key (for example, “Shift” or 
+“Down”)
+
+- char(DOM Level 3): The charproperty behaves the same as keywhen a character key is pressed and is set to 
+nullwhen a noncharacter key is pressed.
+
+- location(DOM Level 3):which is a numeric value indicating where the key was pressed.
