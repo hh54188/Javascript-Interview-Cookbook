@@ -1,5 +1,14 @@
 # Events
 
+## 目录
+
+- [Event Flow](#event-flow)
+- [Bind Event Handler](#bind-event-handler)
+- [Event Object](#event-object)
+    - [如何区分和理解currenttarget和target](#%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86%E5%92%8C%E7%90%86%E8%A7%A3currenttarget%E5%92%8Ctarget)
+- [Event Types](#event-types)
+    - [如何取得任意一个元素的在页面上的位置(getBoundingClientRect)](#%E5%A6%82%E4%BD%95%E5%8F%96%E5%BE%97%E4%BB%BB%E6%84%8F%E4%B8%80%E4%B8%AA%E5%85%83%E7%B4%A0%E7%9A%84%E5%9C%A8%E9%A1%B5%E9%9D%A2%E4%B8%8A%E7%9A%84%E4%BD%8D%E7%BD%AEgetboundingclientrect)
+
 有哪些是冷门同时也是重点？
 
 - 使用联系DOM level 0, DOM level 1, DOM level 2来谈?
@@ -77,7 +86,7 @@ btn.attachEvent(“onclick”, function(){
 
 **DOM Event Object**
 
-- currentTarget: 当前执行的是谁的event handler，谁就是currentTarget（冒泡或捕获过程中的元素）
+- currentTarget: 当前执行的是谁的event handler，谁就是currentTarget（冒泡或捕获过程中的元素） ** the `this` object is always equal to the value of currentTarget**
 
 - target: 最初触发事件的元素
 
@@ -93,7 +102,32 @@ btn.attachEvent(“onclick”, function(){
 - returnValue: can be set to false to cancel the default behavior of the event
 - srcElement: same as the DOM target property
 
+IE中是没有currentTarget参数，具体可以参考jQuery实现，即把回调函数中的this赋值给currentTarget `event.currentTarget = this`
+
 The event handling function is referenced, not copied, **so the this keyword always refers to the window and is completely useless.**
+
+### 如何区分和理解currentTarget和target？
+
+假设页面上有一个按钮，同时给button和body绑定click事件,当点击按钮时：
+
+```
+var btn = document.getElementById(“myBtn”);
+btn.onclick = function(event){
+    // the this object is always equal to the value of currentTarget
+    // currentTarget总是与this关键字等价
+    // 而this总是指向当前函数属于的dom
+    alert(event.currentTarget === this); //true 
+    alert(event.target === this); //true
+};
+
+// 冒泡被触发
+document.body.onclick = function(event){
+    alert(event.currentTarget === document.body); //true
+    alert(this === document.body); //true
+    alert(event.target === document.getElementById(“myBtn”)); //true
+};
+```
+
 
 ## Event Types
 
@@ -154,6 +188,8 @@ EventUtil.addHandler(div, “click”, function(event){
 ```
 
 **Screen Coordinates**
+
+### 如何取得任意一个元素的在页面上的位置(getBoundingClientRect)?
 
 **!!! focus & blur**
 
@@ -234,6 +270,15 @@ Internet Explorer through version 8 also provides a button property, but it has 
 - 5 indicates that the primary and middle buttons have been pressed.
 - 6 indicates that the secondary and middle buttons have been pressed.
 - 7 indicates that all three buttons have been pressed.
+
+**jQuery 1.3.2 line 2753**
+
+```
+// Add which for click: 1 == left; 2 == middle; 3 == right
+// Note: button is not normalized, so don't use it
+if ( !event.which && event.button )
+    event.which = (event.button & 1 ? 1 : ( event.button & 2 ? 3 : ( event.button & 4 ? 2 : 0 ) ));
+```
 
 Internet Explorer provides the following additional information for each mouse event as well:
 
