@@ -8,6 +8,7 @@
     - [如何区分和理解currenttarget和target](#%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86%E5%92%8C%E7%90%86%E8%A7%A3currenttarget%E5%92%8Ctarget)
 - [Event Types](#event-types)
     - [如何取得任意一个元素的在页面上的位置(getBoundingClientRect)](#%E5%A6%82%E4%BD%95%E5%8F%96%E5%BE%97%E4%BB%BB%E6%84%8F%E4%B8%80%E4%B8%AA%E5%85%83%E7%B4%A0%E7%9A%84%E5%9C%A8%E9%A1%B5%E9%9D%A2%E4%B8%8A%E7%9A%84%E4%BD%8D%E7%BD%AEgetboundingclientrect)
+    - [如何修复event.which用于表达鼠标的正确位置](#%E5%A6%82%E4%BD%95%E4%BF%AE%E5%A4%8Deventwhich%E7%94%A8%E4%BA%8E%E8%A1%A8%E8%BE%BE%E9%BC%A0%E6%A0%87%E7%9A%84%E6%AD%A3%E7%A1%AE%E4%BD%8D%E7%BD%AE)
 
 有哪些是冷门同时也是重点？
 
@@ -164,7 +165,7 @@ all browsers
 
 - The values for pageX and pageY are the same as clientX and clientY when the page is not scrolled.
 
-- Internet Explorer 8 and earlier don’t support page coordinates on the event object,The calculation is done as follows:
+- IE8与之前的IE浏览器都没有这个属性Internet Explorer 8 and earlier don’t support page coordinates on the event object,The calculation is done as follows:
 
 ```
 var div = document.getElementById(“myDiv”);
@@ -174,6 +175,10 @@ EventUtil.addHandler(div, “click”, function(event){
         pageY = event.pageY;
 
     if (pageX === undefined){
+
+        // document.documentElement: Returns the Element that is the root element of the document
+        // document.body: In documents with <body> contents, returns the <body> element, and in frameset documents, this returns the outermost <frameset> element.
+
         pageX = event.clientX + (document.body.scrollLeft || 
         document.documentElement.scrollLeft);
     }
@@ -187,9 +192,32 @@ EventUtil.addHandler(div, “click”, function(event){
 });
 ```
 
+jquery 1.3.2 的方法：
+
+```
+// Calculate pageX/Y if missing and clientX/Y available
+if ( event.pageX == null && event.clientX != null ) {
+    var doc = document.documentElement, body = document.body;
+    // 为什么要减clientLeft?
+    event.pageX = event.clientX + (doc && doc.scrollLeft || body && body.scrollLeft || 0) - (doc.clientLeft || 0);
+    event.pageY = event.clientY + (doc && doc.scrollTop || body && body.scrollTop || 0) - (doc.clientTop || 0);
+}
+```
+
 **Screen Coordinates**
 
 ### 如何取得任意一个元素的在页面上的位置(getBoundingClientRect)?
+
+getBoundingClientRect返回的是一个元素在页面上的client坐标系（相对于viewport/浏览器而言）
+
+**兼容IE6** http://www.quirksmode.org/dom/w3c_cssom.html#t21
+
+Returns an object that contains the top, left, right, and bottom (all relative to the top left of the viewport) of the combined rectangle of element x. Essentially, the browser calculates all rectangles (see below getClientRects()), and getBoundingClientRect() returns the lowest (top, left) or highest (bottom, right) values found.
+
+联想getClientRects，兼容IE6，但是在IE6下表现和W3C不一致
+
+https://developer.mozilla.org/en-US/docs/Web/API/Element.getClientRects
+http://www.quirksmode.org/dom/w3c_cssom.html#t22
 
 **!!! focus & blur**
 
@@ -263,13 +291,19 @@ function withinElement(elem, event, type, handle) {
 Internet Explorer through version 8 also provides a button property, but it has completely different values, as described here:
 
 - 0 indicates that no button has been pressed.
-- 1 indicates that the primary mouse button has been pressed.
-- 2 indicates that the secondary mouse button has been pressed.
+- **1 indicates that the primary mouse button has been pressed.**
+- **2 indicates that the secondary mouse button has been pressed.**
 - 3 indicates that the primary and secondary buttons have been pressed.
-- 4 indicates that the middle button has been pressed.
+- **4 indicates that the middle button has been pressed.**
 - 5 indicates that the primary and middle buttons have been pressed.
 - 6 indicates that the secondary and middle buttons have been pressed.
 - 7 indicates that all three buttons have been pressed.
+
+### 如何修复event.which用于表达鼠标的正确位置
+
+IE9以下的浏览器不支持event.which，但是支持event.button，但event.button的参数又和其它浏览器的参数不一样
+
+（真正的event.which返回的其实是charCode）
 
 **jQuery 1.3.2 line 2753**
 
