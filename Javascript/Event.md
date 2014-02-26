@@ -2,6 +2,7 @@
 
 ## 目录
 
+- [FAQ](#faq)
 - [Event Flow](#event-flow)
 - [Bind Event Handler](#bind-event-handler)
 - [Event Object](#event-object)
@@ -9,15 +10,21 @@
 - [Event Types](#event-types)
     - [如何取得任意一个元素的在页面上的位置(getBoundingClientRect)](#%E5%A6%82%E4%BD%95%E5%8F%96%E5%BE%97%E4%BB%BB%E6%84%8F%E4%B8%80%E4%B8%AA%E5%85%83%E7%B4%A0%E7%9A%84%E5%9C%A8%E9%A1%B5%E9%9D%A2%E4%B8%8A%E7%9A%84%E4%BD%8D%E7%BD%AEgetboundingclientrect)
     - [如何修复event.which用于表达鼠标的正确位置](#%E5%A6%82%E4%BD%95%E4%BF%AE%E5%A4%8Deventwhich%E7%94%A8%E4%BA%8E%E8%A1%A8%E8%BE%BE%E9%BC%A0%E6%A0%87%E7%9A%84%E6%AD%A3%E7%A1%AE%E4%BD%8D%E7%BD%AE)
+    - [如何区分focus/blur/focusin/focusout](#focus--blur--focusin--focusout)
+    - [如何区分mouseover/mouseout/mouseenter/mouseleave](#mouseover--mouseenter--relatedtarget-fromelement-toelement)
+- [如何模拟DOMContentLoaded事件](#%E5%A6%82%E4%BD%95%E6%A8%A1%E6%8B%9Fdomcontentloaded%E4%BA%8B%E4%BB%B6)
 
-有哪些是冷门同时也是重点？
 
-- 使用联系DOM level 0, DOM level 1, DOM level 2来谈?
-- 冒泡、捕获的细节问题：所有事件都有冒泡？冒泡的最终对象都是html？
-- 绑定event handler的方式有哪一些？彼此之间有哪些差异？
-- Event Object
-    - IE与一般方式有哪些异同？
-    - **从修复Event Object谈起**（引申到存在处理异同的Event），这一部分参考John的忍者书
+
+## FAQ
+
+- 有哪些绑定事件的方式，聊聊有什么异同(冒泡，this，event type)
+- IE的事件类型和其它浏览器有什么不同（抛开版本谈都是耍流氓？）
+- 如何区分和理解currenttarget和target
+- 如何取得任意一个元素的在页面上的位置(Page Coordination)
+- 如何区分 focus/blur/focusin/focusout
+- 如何区分 mouseover/mouseout/mouseenter/mouseleave
+- 如何模拟DOMContentReady事件
 
 ## DOM Levels
 
@@ -219,48 +226,45 @@ Returns an object that contains the top, left, right, and bottom (all relative t
 https://developer.mozilla.org/en-US/docs/Web/API/Element.getClientRects
 http://www.quirksmode.org/dom/w3c_cssom.html#t22
 
-**!!! focus & blur**
+### focus & blur & focusin & focusout
 
-[Delegating the focus and blur events: A few events, most motably focus, blur, and change, do not bubble up the document tree. ](http://www.quirksmode.org/blog/archives/2008/04/delegating_the.html)
+http://www.quirksmode.org/dom/events/index.html#t08
+http://www.quirksmode.org/blog/archives/2008/04/delegating_the.html
 
-when you define event handlers in the capturing phase,the browser executes any and all event handlers set on ancestors of the event target whether the given event makes sense on these elements or not
+这四个事件从IE6起的所有浏览器都支持，区别是
 
-Unfortunately IE does not support event capturing, However, it supports the focusin and focusout events that do bubble up
+- focus和blur（还有change）事件在w3c标准中，只能被捕获，而不能冒泡
+- 但是IE不支持捕获，于是它的focusin和focusout是恰恰相反能支持冒泡。
 
-**focus和blur事件在w3c标准中，只能被捕获，而不能冒泡。但是IE不支持捕获，于是它的focusin和focusout是恰恰相反能支持冒泡。所以如果当发现用户绑定的是focusin和focusout时，要当做focus和blur处理**
+- [bug] focusin/focusout: Safari and Chrome fire these events only with addEventListener; not with traditional registration(`el.onfocusin`).
+- [bug] focus/blur: Firefox Mac, Safari, and Chrome sometimes don’t support these events on links and/or form fields. See detail page for bug descriptions
 
-
-**!!! mouseover & mouseenter & relatedTarget, fromElement, toElement**
-
-- relatedTarget: This property contains a value only for the mouseoverand mouseoutevents; it is null for all other events.
-
-- fromElement: When the mouseover event fires, Internet Explorer provides a fromElement property containing the related element;
-
-- toElement: when the mouseout event fires, Internet Explorer provides a toElement property containing the related element (Internet Explorer 9 supports all properties).
+jQuery会模拟冒泡事件
+或者把所有的focusin/focusout事件当做focus或者blur来处理
 
 
-W3C added the relatedTarget property to mouseover and mouseout events. This contains the element the mouse came from in case of mouseover, or the element it goes to in case of mouseout.
+### mouseover & mouseenter & relatedTarget, fromElement, toElement
 
-Microsoft created two properties to contain this information:
+http://www.quirksmode.org/js/events_mouse.html
+http://www.quirksmode.org/blog/archives/2008/04/delegating_the.html
 
-- `fromElement` refers to the element the mouse comes from. This is interesting to know in case of mouseover.
-- `toElement` refers to the element the mouse goes to. This is interesting to know in case of mouseout.
+mouseover, mouseout, mouseenter, mouseleave 理论上从IE6开始的所有浏览器都支持，区别：
 
-```
-body.mouseover = doSomething(e) {
-    if (!e) var e = window.event;
-    var relTarg = e.relatedTarget || e.fromElement;
-}
-```
+- mouseover/mouseout: 支持冒泡，无论从子元素向该元素移动，还是从父元素向该元素移动，都会触发
+- mouseenter/mouseleave: 不支持冒泡，仅当从元素外部（不仅仅是父元素，还可能是祖父元素）向该元素移动时，才会触发
+
+当然 mouseenter/mouseleave 更加合理
+
 **mouseenter is better than mouseover**
 
-When the mouse cursor moves over the boundary from the parent to the child element, a mouseoutevent is triggered, even though we might consider the cursor to still
-be within the bounds of the parent element.
+When the mouse cursor moves over the boundary from the parent to the child element, a mouseout event is triggered, even though we might consider the cursor to still be within the bounds of the parent element.
 
-**Solution**:
+如果鼠标只是在元素内部移来移去，当然不希望触发元素的mouseover和mouseleave事件了
 
 ```
-// 不理解
+// 如何解决这个问题
+// Secrets of the Javascript Ninja: page 323
+
 var hover = function (elem, fn) { 
     addEvent(elem, "mouseover", function (e) {
         withinElement(this, e, "mouseenter", fn);
@@ -283,6 +287,29 @@ function withinElement(elem, event, type, handle) {
     if (parent != elem) { 
         handle.call(elem, type);
     }
+}
+```
+
+这个解决方案的原理是模拟mouseenter，当一个mouseover触发的条件仅允许，鼠标从该元素外部向该元素移动，所以在父元素和祖先元素无论如何也不能匹配上元素本身，如果在内部触发就不一样了，不停的网上查找一定会匹配到元素本身的
+
+- [W3C] relatedTarget: This property contains a value only for the mouseover and mouseout events; it is null for all other events.
+
+- [IE] fromElement: When the mouseover event fires, Internet Explorer provides a fromElement property containing the related element;
+
+- [IE] toElement: when the mouseout event fires, Internet Explorer provides a toElement property containing the related element (Internet Explorer 9 supports all properties).
+
+
+W3C added the `relatedTarget` property to `mouseover` and `mouseout` events. This contains the element the mouse came from in case of mouseover, or the element it goes to in case of mouseout.
+
+Microsoft created two properties to contain this information:
+
+- `fromElement` refers to the element the mouse comes from. This is interesting to know in case of mouseover.
+- `toElement` refers to the element the mouse goes to. This is interesting to know in case of mouseout.
+
+```
+body.mouseover = doSomething(e) {
+    if (!e) var e = window.event;
+    var relTarg = e.relatedTarget || e.fromElement;
 }
 ```
 
@@ -342,3 +369,20 @@ character related to the key that was pressed.
 nullwhen a noncharacter key is pressed.
 
 - location(DOM Level 3):which is a numeric value indicating where the key was pressed.
+
+## 如何模拟DOMContentLoaded事件
+
+http://qingbob.com/talk-about-domcontentloaded-technical/
+
+**no-IE**
+
+轮询document的readyState属性，当值为loaded或者complete时
+或
+直接注册DOMContentloaded
+
+**IE**
+
+1. 在页面临时插入一个script元素，并设置defer属性，最后把该脚本加载完成视作DOMContentLoaded事件来触发。
+但这样做有一个问题是，如果插入脚本的页面包含iframe的话，会等到iframe加载完才触发
+
+2. 通过setTiemout来不断的调用documentElement的doScroll方法，直到调用成功则出触发DOMContentLoaded
