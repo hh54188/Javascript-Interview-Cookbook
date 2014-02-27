@@ -25,8 +25,14 @@
 - 如何区分 focus/blur/focusin/focusout
 - 如何区分 mouseover/mouseout/mouseenter/mouseleave
 - 如何模拟DOMContentReady事件
+- document.documentElement vs document.body(in Internet Explorer 6 and 
+earlier)
 
 ## DOM Levels
+
+The first level of the DOM focuses on defining the underlying structure of HTML and XML 
+documents. DOM Levels 2 and 3 build on this structure to introduce more interactivity and 
+support for more advanced XML features.
 
 一般可以理解为：
 
