@@ -13,6 +13,26 @@
     - [如何区分focus/blur/focusin/focusout](#focus--blur--focusin--focusout)
     - [如何区分mouseover/mouseout/mouseenter/mouseleave](#mouseover--mouseenter--relatedtarget-fromelement-toelement)
 - [如何模拟DOMContentLoaded事件](#%E5%A6%82%E4%BD%95%E6%A8%A1%E6%8B%9Fdomcontentloaded%E4%BA%8B%E4%BB%B6)
+    - [如何区分各种readystate](#%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86%E5%90%84%E7%A7%8Dreadystate)
+
+```
+var div = document.createElement("div");
+var try = setInterval(function () {
+    div.doScroll("left")
+})
+
+document.addEventListenter("DOMContentLoaded", fn, false);
+var 
+
+document.attachEvent("onreadystatechange",function () {
+    if (document.readyState == "complete") {
+        document.onreadystatechange = null;
+
+    }
+})
+
+
+```
 
 
 
@@ -392,3 +412,50 @@ http://qingbob.com/talk-about-domcontentloaded-technical/
 但这样做有一个问题是，如果插入脚本的页面包含iframe的话，会等到iframe加载完才触发
 
 2. 通过setTiemout来不断的调用documentElement的doScroll方法，直到调用成功则出触发DOMContentLoaded
+
+### 如何区分各种readystate
+
+以及和script的readystate的区别
+
+有三种状态最常用：`interactive`, `complete`, `loaded`
+
+MDN给出的建议是：
+
+```
+// alternative to DOMContentLoaded
+// jquery本来是用interactive来判断的，但是发现了一个bug，
+// http://bugs.jquery.com/ticket/12282#comment:15
+// 所以还是改为了complete
+
+// prototype使用的也是complete
+document.onreadystatechange = function () {
+  if (document.readyState == "interactive") {
+    initApplication();
+  }
+}
+
+// alternative to load event
+document.onreadystatechange = function () {
+  if (document.readyState == "complete") {
+    initApplication();
+  }
+}
+```
+
+但是不同类库的实现是不同的，类库的script加载都以loaded为标志
+
+比如
+
+http://www.html5rocks.com/en/tutorials/speed/script-loading/
+
+https://github.com/getify/LABjs
+
+[seajs](https://github.com/seajs/seajs)使用了loaded和complete：
+
+```
+node.onreadystatechange = function() {
+    if (/loaded|complete/.test(node.readyState)) {
+        onload()
+    }
+}
+```
