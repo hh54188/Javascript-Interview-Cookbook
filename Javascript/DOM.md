@@ -4,13 +4,17 @@
 
 - [FAQ](#faq)
 - [Node Relationships](#node-relationships)
+    - [`insertBefore`/`replaceChild`/`removeChild`；如果只有一个参数用法如何？如何实现`insertAfter()`和`prependChild`?]()
 - [Offset Dimensions](#offset-dimensions)
 - [Client Dimensions](#client-dimensions)
 - [Scroll Dimensions](#scroll-dimensions)
+    - [区分Offset/Client/Scroll/Page这几个坐标系（写一个lazyload）]()
+- [getBoundingClientRect](#getboundingclientrect)
 
 ## FAQ    
 
-- `insertBefore`如果只有一个参数用法如何？如何实现`insertAfter()`?
+- **区分Offset/Client/Scroll/Page这几个坐标系（写一个lazyload即可）**
+- 熟悉`insertBefore`等的用法；如果只有一个参数用法如何？如何实现`insertAfter()`/`prepend`?
 - `offsetParent` 和 `parentNode` 和 `parentElement` 有什么区别？
 - 如何计算一个元素在页面上的位置(Page Coordation:offsetLeft/offsetTop)?
 - Offset Dimensions和Client Dimensions哪个是会把scrollbar计算在内？ 
@@ -19,6 +23,43 @@
 ## Node Relationships
 
 ![Alt text](images/node-rel.jpg)
+
+### insertBefore(), removeChild(), replaceChild()
+
+**第一个参数永远都是要删除，要插入的新/重要节点，第二个是参考节点**
+
+- `insertBefore()`: `var insertedElement = parentElement.insertBefore(newElement, referenceElement);`
+
+如果第二个referenceElement为空，则如同appendChild
+
+注意，没有`insertAfter方法`，但是可以用`insertBefore`实现, 比如p1想插在p2节点后面：
+
+```
+p2.parentNode.insertBefore(p1, p2.nextSibling);
+
+```
+
+利用insertBefore实现prependChild方法：
+
+```
+function prependChild(parent, newNode) {
+    parent.insertBefore(newNode, parent.firstChild);
+}
+```
+
+- `removeChild()`: `var oldChild = element.removeChild(child);` **只能删除一级子（儿子）元素，不能删除孙子元素**
+
+删除所有子元素：
+
+```
+while (el.firstChild) {
+    el.removeChild(el.firstChild);
+}
+```
+
+- `replaceChild()`: `replacedNode = parentNode.replaceChild(newChild, oldChild)`; 返回的是插入的新节点
+
+- `var dupNode = cloneNode(deep)`: 如果参数为true则拷贝的新节点包括孩子节点，否则只拷贝自己
 
 ## Offset Dimensions
 
@@ -115,3 +156,25 @@ function getViewport(){
 var docHeight = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight);
 var docWidth = Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth);
 ```
+
+### 区分Offset/Client/Scroll/Page这几个坐标系（写一个lazyload）
+
+在event handler中，存在三个坐标系client（相对于浏览器）、page（相对于页面）、screen（相对于电脑屏幕），这三个坐标都是**鼠标的点击位置**
+
+注意在IE8及之前的浏览器没有page坐标需要算出来:
+
+```
+var view = document.documentElement || document.body;
+pageX = e.client + view.scrollLeft;
+```
+
+一个元素应该有 1.相对于浏览器；2.相对于页面；3.相对于相对父节点(absolute/fixed) 三种坐标
+
+## getBoundingClientRect
+
+几乎所有的浏览器都支持：
+http://www.quirksmode.org/dom/w3c_cssom.html
+
+除了一点小意外：
+
+The browser implementations are slightly different. Internet Explorer 8 and earlier consider the upper-left corner of the document to be located at (2,2), whereas the other implementations, including Internet Explorer 9, use the traditional (0,0) as the starting coordinates.
