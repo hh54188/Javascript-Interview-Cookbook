@@ -5,6 +5,7 @@
 - [FAQ](#faq)
 - [Event Flow](#event-flow)
 - [Bind Event Handler](#bind-event-handler)
+    - 如何避免内存泄露？
 - [Event Object](#event-object)
     - [如何区分和理解currenttarget和target](#%E5%A6%82%E4%BD%95%E5%8C%BA%E5%88%86%E5%92%8C%E7%90%86%E8%A7%A3currenttarget%E5%92%8Ctarget)
 - [Event Types](#event-types)
