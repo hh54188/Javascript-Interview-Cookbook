@@ -24,3 +24,20 @@ function setHandler() {
 如何解决这个问题呢：
 
 ![lead](./images/memory_leak_02.png)
+
+同样XMLHttpRequest也有同样的问题：
+
+```
+var xhr = new XMLHttpRequest() // or ActiveX in older IE
+xhr.open('GET', '/server.url', true)
+xhr.onreadystatechange = function() {
+  if(xhr.readyState == 4 && xhr.status == 200) {           
+    // ...
+  }
+}
+ 
+xhr.send(null)
+```
+
+![xhr](./images/xhr.png)
+
