@@ -1,17 +1,38 @@
 # Prototype
 
 ## FAQ
+- 说出一些ECMAScript 5的Object方法，比如`Object.keys`
+- 请详细解释属性的属性`[[Configurable]]`, `[[Enumerable]]`, `[[Writable]]`, `[[Value]]`
 - 如何创建一个对象？请说出三种以上的方法
 - 聊聊prototype属性特性
     - 判断一个属性只存在于prototype上
+- 请列举出至少三种的继承方式，并说明他们的优劣
 
 ## 目录
+
+## 一些新的Object方法：
+
+- `Object.keys()`: returns an array of a given object's **own** **enumerable** properties
+
+- `Object.create()`: （创建）返回一个对象，该对象的prototype属性即为传入对象
+
+- `Object.getOwnPropertyNames()`: returns an array of all properties **(enumerable or not)** found **directly upon** a given object.
+
+- `Object.getOwnPropertyDescriptor()`:  returns a property descriptor for an own property
+
+- `Object.freeze()`: 该对象的属性不可以被修改，也不可新增属性enumerability, configurability, or writability都不可以被修改
+
+- `Object.seal()`: 不可新增属性，但旧属性仍然可被修改
+
+- `defineProperties()`
+
+- `defineProperty()`
 
 ## Type of Object Properties
 
 - Data properties
-    - [[Configurable]]
-    - [[Enumerable]]
+    - [[Configurable]]: Indicates if the property may be redefined by removing the property via delete, changing the property’s attributes, or changing the property into an accessor property.
+    - [[Enumerable]]: Indicates if the property will be returned in a `for-in` loop. 
     - [[Writable]]: if the property’s value can be changed
     - [[Value]]
 
@@ -221,3 +242,126 @@ alert(friend instanceof Object); //true
 - **prototype是动态的，重写构造函数的prototype时千万小心，可能会影响实例**：与添加prototype属性不同，重写prototype完全是把prototype指向了另一个对象。
 
 - **prototype是被所有对象共享的**
+
+## 继承
+
+### Prototype Chaining
+
+继承的基本原理是：把一个构造函数的prototype指向另一个对象，那么这个构造函数同时也继承了另一个对象构造函数上的prototype属性。
+
+**坏处：prototype中的属性和方法会被所有实例**
+
+注意`instanceof`(**为什么？**)：
+
+```
+// subType继承自SuperType，SuperType继承自Object, instance为SubType的实例
+alert(instance instanceof Object); //true
+alert(instance instanceof SuperType); //true
+alert(instance instanceof SubType); //true
+
+1 instanceof Object // false
+1 instanceof Number // false
+
+"1" instanceof Object // false
+[] instanceof Object //false
+```
+
+### Constructor Stealing
+
+在子类中召唤父类的构造函数
+
+**坏处：因为调用构造函数，而非new一个。那么方法也必须定义在构造函数内部，prototype上的属性不能共用。**
+
+```
+function SuperType(name){
+    this.name = name;
+}
+
+function SubType(){ 
+    //inherit from SuperType passing in an argument
+    SuperType.call(this, “Nicholas”);
+
+    //instance property
+    this.age = 29;
+}
+
+var instance = new SubType();
+alert(instance.name); //”Nicholas”;
+alert(instance.age); //29
+```
+
+### Constructor Stealing + Prototype Chaining
+
+基本上没有什么坏处，但是下面有更好的办法
+
+```
+function SuperType(name){
+    this.name = name;
+    this.colors = [“red”, “blue”, “green”];
+}
+
+SuperType.prototype.sayName = function(){
+    alert(this.name);
+};
+
+function SubType(name, age){ 
+    //inherit properties
+    SuperType.call(this, name);
+    this.age = age;
+}
+
+//inherit methods
+SubType.prototype = new SuperType();
+SubType.prototype.sayAge = function(){
+    alert(this.age);
+};
+```
+
+### Prototypal Inheritance
+
+```
+// Object.create:
+
+function object(o){
+    function F(){}
+    F.prototype = o;
+    return new F();
+}
+
+var person = {
+    name: “Nicholas”,
+    friends: [“Shelby”, “Court”, “Van”]
+};
+
+var anotherPerson = object(person);
+```
+
+### 终极方案：
+
+```
+function inheritPrototype(subType, superType){
+    var prototype = object(superType.prototype); //create object
+    prototype.constructor = subType; //augment object
+    subType.prototype = prototype; //assign object
+}
+
+function SuperType(name){
+    this.name = name;
+    this.colors = [“red”, “blue”, “green”];
+}
+
+SuperType.prototype.sayName = function(){
+    alert(this.name);
+};
+
+function SubType(name, age){ 
+    SuperType.call(this, name);
+    this.age = age;
+}
+
+inheritPrototype(SubType, SuperType);
+
+SubType.prototype.sayAge = function(){
+    alert(this.age);
+};
+```
