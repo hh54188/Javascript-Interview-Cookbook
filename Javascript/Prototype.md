@@ -12,6 +12,8 @@
 
 ## 一些新的Object方法：
 
+http://ejohn.org/blog/ecmascript-5-objects-and-properties/#postcomment
+
 - `Object.keys()`: returns an array of a given object's **own** **enumerable** properties
 
 - `Object.create()`: （创建）返回一个对象，该对象的prototype属性即为传入对象
