@@ -1,5 +1,13 @@
 # Data Types
 
+## FAQ
+
+- 如何表示十六进制和八进制？如何将十六进制八进制转化为十进制？
+- 如何把一个数字转为字符串？或者把字符串转为数字？(toFixed, parseInt)
+- `var number = string_value - 0` 与 `var number = string_value + 0`有什么区别？
+- 区别`parseInt("ff")`与`parseInt("ff", 16)`、`parseInt(15)`与`parseInt(15, 16)`
+- 哪些数字和字符串和哪些值可以转化为false？
+
 ## Contents
 
 - [typeof && instanceof](#typeof--instanceof)
@@ -35,7 +43,15 @@
 ## Primitive
 
 - Boolean
+    - 数字：0或者NaN可转化为false，其他的统统转为true
+    - 字符串：空字符串转化为false
+    - 空值或未定义转化为false
+    - 空对象，空数组或函数都为true
 - Number
+    - 十六进制以0x开头，八进制以0开头
+    - 十六进数2AF5, 换算成10进制：5 x 16^0 + 15 x 16^1 + 10 x 16^2 + 2 x 16^3
+    - 把数字转化为字符串，把字符串转化为数字
+    - 区别`parseInt("ff")`与`parseInt("ff", 16)`、`parseInt(15)`与`parseInt(15, 16)`
 - String
 - Undefined
     - When a variable is 
@@ -51,8 +67,11 @@ returns “undefined”
     - you should never explicitly set the value of a variable to undefined
     - Any time an object is expected but is not available, nullshould be 
 used in its place
+    - `null == undefined // true` 
 
 ## Reference Types
+
+以下这些数据类型，都可以被看做是对象，数组其实是一种特殊的对象
 
 - Object
 - Array

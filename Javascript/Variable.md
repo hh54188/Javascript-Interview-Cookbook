@@ -1,0 +1,7 @@
+# Variable
+
+## FAQ
+
+## Content
+
+##
