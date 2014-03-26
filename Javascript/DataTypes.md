@@ -2,6 +2,7 @@
 
 ## FAQ
 
+- 哪些是基本类型，哪些是引用类型
 - 如何表示十六进制和八进制？如何将十六进制八进制转化为十进制？
 - 如何把一个数字转为字符串？或者把字符串转为数字？(toFixed, parseInt)
 - `var number = string_value - 0` 与 `var number = string_value + 0`有什么区别？

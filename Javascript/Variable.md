@@ -1,7 +1,0 @@
-# Variable
-
-## FAQ
-
-## Content
-
-##
