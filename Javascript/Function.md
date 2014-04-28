@@ -1,6 +1,57 @@
 # Function
 
-## Contents
+## FAQ 
+
+- `(function () {})()` VS `function fn() {}`
+- 请解释什么是闭包以及闭包的原理
+- 请解释`this`关键字有哪些含义
+- 函数有哪些用法？
+
+## `(function () {})()` VS `function fn() {}()`
+
+http://kangax.github.io/nfe/
+
+后者有什么问题？
+
+创建一个函数对象(functoin object)的方式：函数表达式(function expression)和函数声明(function declaration)
+
+```
+FunctionDeclaration :
+function Identifier ( FormalParameterList opt ){ FunctionBody }
+
+FunctionExpression :
+function Identifier opt ( FormalParameterList opt ){ FunctionBody }
+```
+
+函数表达式的函数名是可有可无的，但如果出现了，浏览器怎么区分是函数表达式还是函数声明？
+
+**通过上下文**
+
+- 如果`function foo() {}`是赋值表达式的一部分(assignment expression)，那么它一定是函数表达式
+
+- 如果`function foo() {}`在双括号中`(function foo() {})`那么一定是表达式，因为`(`和`)`是只能包含表达式的操作符
+
+- 如果`function foo() {}`是在一个函数体内或者暴露在程序中，那么一定是函数声明
+
+```
+function foo(){}    // declaration, since it's part of a <em>Program</em>
+var bar = function foo(){};     // expression, since it's part of an <em>AssignmentExpression</em>
+
+new function bar(){};   // expression, since it's part of a <em>NewExpression</em>
+// 注意new关键字为运算符，详情可参考“Javascript权威指南”
+
+(function(){
+  function bar(){}  // declaration, since it's part of a <em>FunctionBody</em>
+})();
+
+```
+
+- 使用`eval`来转化JSON时，也必须加上括号，避免花括号`{`被解释成`块`
+
+```
+eval('{"lee": "hello"}') // error
+eval('({"lee": "hello"})') // correct
+```
 
 
 ## arguments
