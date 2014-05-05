@@ -2,12 +2,12 @@
 
 ## FAQ 
 
-- `(function () {})()` VS `function fn() {}`
+- `(function () {})()` VS `function fn() {}` VS `(function () {})`
 - 请解释什么是闭包以及闭包的原理
 - 请解释`this`关键字有哪些含义
 - 函数有哪些用法？
 
-## `(function () {})()` VS `function fn() {}()`
+## `(function () {})()` VS `function fn() {}()` VS `(function () {})`
 
 http://kangax.github.io/nfe/
 
@@ -52,6 +52,16 @@ new function bar(){};   // expression, since it's part of a <em>NewExpression</e
 eval('{"lee": "hello"}') // error
 eval('({"lee": "hello"})') // correct
 ```
+
+## `(function () {})` VS `(function () {})()`
+
+http://stackoverflow.com/questions/8228281/what-is-this-iife-construct-in-javascript
+
+前者返回（创建）了一个函数表达式，后者立即执行了这个函数表达式，并且后者为IIFE(Immediately-Invoked Function Expressions)
+
+这么做通常是为了避免污染全局变量
+
+
 
 
 ## arguments

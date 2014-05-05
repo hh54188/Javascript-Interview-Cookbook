@@ -2,12 +2,54 @@
 
 ## FAQ 
 
+- **表达式(Expression)与语句(Statement)有什么区别**
+- `+`操作符在什么情况下转化为字符串？
+- `{} + []` 与 `[] + {}`的区别是什么（请参考以上两个知识点）？
 - 有哪些运算符是由关键字表示的
 - 算术运算符在什么情况下可以将字符转化成数字？
 - `==`(等同)与`===`(相等)有什么区别？
 - `==`下，不同类型进行比较的规则是什么？
 - `"1" == true`?
 - 赋值运算符有什么特征？
+
+## 表达式(Expression)与语句(Statement)的区别
+
+### 表达式(Expression)
+
+表达式
+
+>An  expressionis a phrase of JavaScript that a JavaScript interpreter can  evaluate to produce a value.
+
+**表达式一定有返回值！**
+
+除了带运算符的表达式外，还有以下几类：
+
+- `直接量`表达式: `1.7`,`Javscript`
+- `对象和数组初始化`表达式：`[]`,`[1,2,3]`,`{}`
+- `函数定义`表达式(**注意如何区分函数定义与函数表达式**)：`var foo = function () {}`;
+- `属性访问`表达式：`expression. identifier`，`expression[ expression]`
+- `函数调用`表达式：`Math.max(x,y,z) `
+- `创建对象`表达式: `new Object()`, `new Object`
+
+### 语句(Statement)
+
+>Expressions are  evaluatedto produce a value, but statements are executed to make something happen.
+
+但有一些语句是由有副作用(side-effect)的表达式构成的，比如
+
+- 赋值和函数调用表达式(expression statement)
+- 声明新的变量和定义函数时(declaration statements)
+
+
+## `+`操作符：
+
+从左往右运算：
+
+1. 如果左右任意一个操作数(operand)是对象类型(object), 那么会用`object-to-primitive`算法转化为基本类型，比如使用`toString`或者`valueOf`方法
+
+2. 转化为基本类型后，如果任意一个操作数是字符串类型，则进行字符串拼接操作
+
+3. 否则，转化为数字类型(或者 `NaN`)，执行加法操作
 
 ## 主要运算符优先级：
 
