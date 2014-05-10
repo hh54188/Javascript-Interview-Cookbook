@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .container {
+            width: 960px;
+            margin: 0 auto;
+        }
+        .wrap {
+            margin-left: 300px;
+            margin-right: 200px;
+            float: left;
+        }
+        /*
+            三列固定时的中间列
+            不能用百分比，只能用固定宽度
+        */
+        .content {
+            width: 460px;
+            background: black;
+        }
+        .nav {
+            width: 300px;
+            float: left;
+            margin-left: -960px;
+            background: blue;
+        }
+        .side {
+            width: 200px;
+            float: left;
+            margin-left: -200px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="wrap">
+            <div class="content">content</div>
+        </div>
+        <div class="nav">nav</div>
+        <div class="side">side</div>
+    </div>
+</body>
+</html>

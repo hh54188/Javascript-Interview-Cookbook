@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .wrap {
+            width: 100%;
+            margin-left: -500px;
+            /*
+                这里要深深体会
+                这是唯一一个用float:right的地方;
+            */
+            float: right;
+        }
+        .content {
+            background: black;
+        }
+        .nav {
+            width: 300px;
+            background: blue;
+            float: right;
+        }
+        .side {
+            width: 200px;
+            background: red;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="content">content</div>
+    </div>
+    <div class="nav">nav</div>
+    <div class="side">side</div>
+</body>
+</html>
