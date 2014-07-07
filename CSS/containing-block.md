@@ -19,11 +19,12 @@ http://www.w3.org/TR/CSS2/visudet.html
 
 >If there is no such ancestor, the containing block is the initial containing block.
 
-Continious media: http://webdesign.about.com/od/cssglossary/g/continuous-media.htm
 
 一个元素的位置和尺寸通常相对于一个矩形计算的，这个矩形就被称为这个元素的**包含块(Containing Block)**，包含块的定义如下：
 
 1. 根元素所在的包含块被称为初始包含块(initial containing block)，可以看做浏览器的视口(viewport)，或者页面区域(page area)
-2. 如果元素的position属性是`relative`或者`static`，那么包含块是距离最近的块状祖先元素(nearest block container ancestor box)
+2. 如果元素的position属性是`relative`或者`static`，那么包含块是:距离最近的块状祖先元素(nearest block container ancestor box)的**内容边缘(content edge)**
 3. 如果元素的position属性是`fixed`，包含块为浏览器视口(viewport)
-4. 如果元素的position属性是`absolute`
+4. 如果元素的position属性是`absolute`，那么包含块所在的元素是:带有`position`属性(除`relative`)的最近元素，还要分两种情况：
+    - 如果这个祖先元素是行内元素，那么包含块是行内元素夸行产生的`bounding box`的padding box？
+    - 如果是块级元素，包含块是祖先的内边距边缘
