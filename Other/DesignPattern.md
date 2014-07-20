@@ -28,12 +28,69 @@
 **每一次完成一种设计后，应该再想想，如果复用的话是否会违反以上规则**
 
 ## Contents
+- [Observer Pattern](#observer-pattern)
+- [Strategy Pattern](#strategy-pattern)
 - [Bridge Pattern](#bridge-pattern)
 - [Facade Pattern](#facade-pattern)
 - [Composite Pattern](#composite-pattern)
 - [Adapter Patterns](#adapter-patterns)
 - [Decorator Pattern](#decorator-pattern)
 - [Factory Pattern](#factory-pattern)
+
+## Observer Pattern
+
+当subject的某个动作需要引发一系列不同对象的动作（比如你是一个班长要去通知班里的某些人），与其一个一个的手动调用触发的方法（私下里一个一个通知），不如维护一个列表（建一个群），这个列表存有你想要调用的对象方法（想要通知的人）；之后每次做的触发的时候只要轮询这个列表就好了（群发），而不用关心这个列表里有谁，只用关心想让谁加入让谁退出
+
+这个列表就叫做ObserverList，它有一些维护列表方法：
+
+```
+function ObserverList(){
+  this.observerList = [];
+}
+ObserverList.prototype.Add = function( obj ){};
+ObserverList.prototype.Empty = function(){};
+ObserverList.prototype.Count = function(){};
+ObserverList.prototype.Get = function( index ){};
+ObserverList.prototype.Insert = function( obj, index ){};
+ObserverList.prototype.IndexOf = function( obj, startIndex ){};
+ObserverList.prototype.RemoveAt = function( index ){};
+```
+
+而我们的subject只用关心两件事：1.维护这个列表，2.发布事件:
+
+```
+function Subject(){
+  this.observers = new ObserverList();
+}
+
+Subject.prototype.AddObserver = function( observer ){
+  this.observers.Add( observer );
+};  
+
+Subject.prototype.RemoveObserver = function( observer ){
+  this.observers.RemoveAt( this.observers.IndexOf( observer, 0 ) );
+};  
+
+Subject.prototype.Notify = function( context ){
+  var observerCount = this.observers.Count();
+  for(var i=0; i < observerCount; i++){
+    this.observers.Get(i).Update( context );  
+    // 在这里假设的是列表里的每个对象都有update方法，但个人觉得这个列表里也可以是不同对象的不同方法，只要能接受当前上下文作为参数, 可以这样执行：
+    // subscription.callback.apply( subscription.context, args );
+  }
+};
+```
+
+这样以来，Subject就不用关心具体的订阅的每一个人，而是只关心列表就好了，而观察者们只要提供一个统一的接口就好了
+
+
+## Strategy Pattern
+
+- 将不同的算法封装起来，相互之间可以替换，通常会暴露相同的接口(都继承自父类，并实现父类的抽象接口方法)，不至于替换之后会有影响
+
+- 这些算法做的其实都是相同工作，但是内容不同。就好像排序有很多算法，所做的工作都是排序，但是实现不一样（这里不关注效率）
+
+- 而调用者不用关心具体的算法，因为它们都有同样的接口，降低了耦合
 
 ## Bridge Pattern
 
@@ -60,6 +117,11 @@ function getBeerByIdBridge (e) {
     });
 }
 ```
+
+注意这里要区分桥接模式与外观模式。看上去两者都是封装实现。但细节上是：
+
+1. 桥接模式强调的是**接口与接口实现**的分离
+2. 外观模式强调的是屏蔽接口内部实现的复杂，只暴露出接口；使用更高层的接口封装底层的接口
 
 ## Facade Pattern
 
@@ -167,6 +229,8 @@ Insurance(mb);
 
 ## Factory Pattern
 
+工厂模式主要解决了对象实例化的问题
+
 重点要区分：
 
 - 简单工厂
@@ -175,7 +239,7 @@ Insurance(mb);
 
 >This is particularly useful if the object creation process is relatively complex, e.g. if it strongly depends on dynamic factors or application configuration.
 
->工厂方法模式，定义一个用于创建对象的接口，让子类决定实例化哪一个类。工厂方法使一个类的实例化延迟到其子类
+>*工厂方法模式*，定义一个用于创建对象的接口，让子类决定实例化哪一个类。工厂方法使一个类的实例化延迟到其子类
 
 Javascript中没有接口（但是可以用类来代替）！很多的模式在Javascript中都违反了“开放-封闭”的原则，如果要复用就要修改类（或者用类来代替接口）！
 
