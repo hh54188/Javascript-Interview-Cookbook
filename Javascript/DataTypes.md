@@ -31,6 +31,11 @@
 - `typeof null // object`
 - `typeof NaN // number`
 
+**With one exception**
+
+- `typeof new Function // function `
+- `typeof function () {}` // function`
+
 **The difference between `String value(primitive string)` and [String object](http://es5.github.io/#x4.3.16)**
 
 - A String object is created by using the String constructor in a new expression, supplying a String value as an argument
