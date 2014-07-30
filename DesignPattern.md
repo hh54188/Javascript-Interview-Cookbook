@@ -28,6 +28,7 @@
 **每一次完成一种设计后，应该再想想，如果复用的话是否会违反以上规则**
 
 ## Contents
+- [Flyweight Pattern](#flyweight-pattern)
 - [Proxy Pattern](#proxy-pattern)
 - [Observer Pattern](#observer-pattern)
 - [Strategy Pattern](#strategy-pattern)
@@ -37,6 +38,18 @@
 - [Adapter Patterns](#adapter-patterns)
 - [Decorator Pattern](#decorator-pattern)
 - [Factory Pattern](#factory-pattern)
+
+## Flyweight Pattern
+
+享元模式，很简单，就是**Object Pool**！
+
+! http://buildnewgames.com/garbage-collector-friendly-code/
+http://blog.sklambert.com/javascript-object-pool/
+http://beej.us/blog/data/object-pool/
+
+使用场景：使用的大量的类似对象（比如打飞机游戏中发射的大量子弹），这种情况下引起的问题有：
+1. 内存开销太大
+2. 内存回收会减低性能
 
 ## Proxy Pattern
 
