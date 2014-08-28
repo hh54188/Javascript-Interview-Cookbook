@@ -9,6 +9,7 @@
 - `var number = string_value - 0` 与 `var number = string_value + 0`有什么区别？
 - 区别`parseInt("ff")`与`parseInt("ff", 16)`、`parseInt(15)`与`parseInt(15, 16)`
 - 哪些数字和字符串和哪些值可以转化为false？
+- **一定要记住和区分`slice`和`splice`**
 
 ## Contents
 
@@ -138,3 +139,26 @@ used in its place
 All function arguments in ECMAScript are passed by value. This means that the value outside of 
 the function is copied into an argument on the inside of the function the same way a value is copied 
 from one variable to another
+
+## 区分`slice`和`splice`
+
+### slice(start, end)
+
+从已有的数组中返回选定的元素
+
+- start: 必需。规定从何处开始选取。该参数是数组下标，会返回该数
+- end: 可选。规定从何处结束选取。该参数是数组下标，不会返回该数，但是以该数结尾
+
+并不会修改原数组，而是返回新的数组
+
+### splice(index, howmany, item1,.....,itemX);
+
+方法向/从数组中添加/删除项目，然后返回被删除的项目
+
+- index:   必需。整数，规定添加/删除项目的位置，该参数是数组下标，删除时包括该数
+- howmany: 必需。要删除的项目数量。如果设置为 0，则不会删除项目。从上面的index开始算起
+- item1, ..., itemX:   可选。向数组添加的新项目。
+
+会修改原数组
+
+
