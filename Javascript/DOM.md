@@ -8,7 +8,8 @@
 - [Offset Dimensions](#offset-dimensions)
 - [Client Dimensions](#client-dimensions)
 - [Scroll Dimensions](#scroll-dimensions)
-    - [区分Offset/Client/Scroll/Page这几个坐标系（写一个lazyload）]()
+    - [如何区分事件参数中Offset/Client/Scroll/Page这几个坐标系（写一个lazyload）]()
+    - [如何区分一个元素的clientHeight/scrollHeight/offsetHeiht等参数]()
 - [getBoundingClientRect](#getboundingclientrect)
 
 ## FAQ    
@@ -157,7 +158,7 @@ var docHeight = Math.max(document.documentElement.scrollHeight, document.documen
 var docWidth = Math.max(document.documentElement.scrollWidth, document.documentElement.clientWidth);
 ```
 
-### 区分Offset/Client/Scroll/Page这几个坐标系（写一个lazyload）
+### 区分事件参数中Offset/Client/Scroll/Page这几个坐标系（写一个lazyload）
 
 在event handler中，存在三个坐标系client（相对于浏览器）、page（相对于页面）、screen（相对于电脑屏幕），这三个坐标都是**鼠标的点击位置**
 
@@ -169,6 +170,38 @@ pageX = e.client + view.scrollLeft;
 ```
 
 一个元素应该有 1.相对于浏览器；2.相对于页面；3.相对于相对父节点(absolute/fixed) 三种坐标
+
+### 如何区分一个元素的clientHeight/scrollHeight/offsetHeight等参数
+
+这三个参数放在一个存在滚动条的容器中最合适
+
+写一个使用保持右下角悬浮组件最合适
+
+- clientHeight：元素用来展现的内容区域高度(包括padding，但不包括滚动条)
+- scrollHeight: 导致滚动条产生的滚动区域高度
+- offsetHeight: 元素所占的区域高度(包括滚动条)
+
+同时可以参考：http://stackoverflow.com/questions/9027249/confused-by-document-dimensions-in-javascript
+
+注意在再起IE中是没有window.innerWidth这个参数的，需要通过clientHeight来取得。
+但是需要判断是否是兼容模式的情况：
+
+```
+// 早期的IE中仅仅支持document.body，而不支持document.documentElement
+document.compatMode == "BackCompat"? 
+    document.body.clientHeight:
+    document.documentElement.clientHeight;
+```
+
+同时在计算文档高度是也需要注意，clientHeight和scrollHeight可能代表的结果相同也可能不同，
+如上面所说。所以需要注意做兼容
+
+```
+ Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight);
+```
+
+没事不要用scrollHeight，非常不靠谱
+
 
 ## getBoundingClientRect
 
