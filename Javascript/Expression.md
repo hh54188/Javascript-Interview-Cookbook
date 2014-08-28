@@ -11,6 +11,7 @@
 - `==`下，不同类型进行比较的规则是什么？
 - `"1" == true`?
 - 赋值运算符有什么特征？
+- `foo = foo++` 最后`foo`至到底是什么？
 
 ## 表达式(Expression)与语句(Statement)的区别
 
@@ -129,3 +130,22 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Expressions_and_Op
 - `delete`: 它将删除运算数指定的对象的属性，数组元素或变量。如果成功返回true、失败返回false
 - **`void`**: `void`比`undefined`先出生，用表达式`void 0`比`undefined`更有用
 - **`,`**: 先计算其左边的参数，再计算其右边的参数，然后返回最右边的参数
+
+### `foo = foo++`
+
+看下面这个例子：
+
+```
+var foo = 1;
+foo = foo++;
+console.log(foo) // 1
+```
+
+在表达式`foo++`产生`1`值，并且赋给foo之后，`foo`再自加，最后`foo`的值不应该是2吗？
+
+注意，其实真正的顺序应该是这样的：
+
+1. foo++ evaluates as 1
+2. foo is incremented by ++ to 2
+3. 1 (the results of evaluating the expression) is passed left
+4. foo = 1 causes that value to be assigned to foo (overwriting the 2).
