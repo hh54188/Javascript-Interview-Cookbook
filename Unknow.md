@@ -1,5 +1,0 @@
-- DOM Level 1/2/3
-- Custom define event
-- quirk mode
-- event.target / this
-- 

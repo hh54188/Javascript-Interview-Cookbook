@@ -33,4 +33,4 @@
 - AMD中`require`与`define`关键字的区别([when to use require and when to use define](http://stackoverflow.com/questions/9507606/when-to-use-require-and-when-to-use-define))
 
 - 假设浏览器在未缩放正常情况下winodw.innerWidth为1280，那么当浏览器页面放大至200%之后，
-window.innerWidth应该是多少？为什么？
+window.innerWidth/offsetHeighht/点击事件中的pageX/应该是多少？为什么？
