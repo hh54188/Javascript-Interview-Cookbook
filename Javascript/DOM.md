@@ -38,13 +38,12 @@ var height = window.innerHeight
 ```
 
 获取宽：
-获取宽本来应该像上面获取高一样，区分是否是兼容模式
-但在实践中发现下面的方法更好
 
 ```
 var width = window.innerWidth 
-            || document.body.clientWdith
-            || document.documentElement.clientWidth; 
+            || (document.compatMode == "BackCompat" 
+                ? document.body.clientWidth
+                : document.documentElement.clientWidth); 
 ```
 
 ### insertBefore(), removeChild(), replaceChild()
