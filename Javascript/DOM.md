@@ -15,6 +15,7 @@
 ## FAQ    
 
 - **区分Offset/Client/Scroll/Page这几个坐标系（写一个lazyload即可）**
+- 如何兼容IE6的获取viewport宽和高？
 - 熟悉`insertBefore`等的用法；如果只有一个参数用法如何？如何实现`insertAfter()`/`prepend`?
 - `offsetParent` 和 `parentNode` 和 `parentElement` 有什么区别？
 - 如何计算一个元素在页面上的位置(Page Coordation:offsetLeft/offsetTop)?
@@ -24,6 +25,27 @@
 ## Node Relationships
 
 ![Alt text](images/node-rel.jpg)
+
+### 如何兼容IE6的获取viewport的宽和高
+
+获取高：
+
+```
+var height = window.innerHeight 
+            || (document.compatMode == "BackCompat" 
+                ? document.body.clientHeight
+                : document.documentElement.clientHeight);
+```
+
+获取宽：
+获取宽本来应该像上面获取高一样，区分是否是兼容模式
+但在实践中发现下面的方法更好
+
+```
+var width = window.innerWidth 
+            || document.body.clientWdith
+            || document.documentElement.clientWidth; 
+```
 
 ### insertBefore(), removeChild(), replaceChild()
 
