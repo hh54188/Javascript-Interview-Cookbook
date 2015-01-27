@@ -28,3 +28,4 @@ http://www.w3.org/TR/CSS2/visudet.html
 4. 如果元素的position属性是`absolute`，那么包含块所在的元素是:带有`position`属性(除`relative`)的最近元素，还要分两种情况：
     - 如果这个祖先元素是行内元素，那么包含块是行内元素夸行产生的`bounding box`的padding box？
     - 如果是块级元素，包含块是祖先的内边距边缘
+    - **绝对定位元素是脱离标准流的，它的宽和高不会对containing element产生任何影响**
