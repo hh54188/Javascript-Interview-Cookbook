@@ -1,5 +1,9 @@
 # 浮动元素
 
+悬浮大全：http://css-tricks.com/all-about-floats/
+
+
+
 float元素仍然在标准流中
 
 使用float属性时，最好给元素赋值上宽度，否则浮动元素宽度有可能等于containing block

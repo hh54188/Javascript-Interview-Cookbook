@@ -1,0 +1,5 @@
+- `DOCTYPE`不同
+- XHTML大小写敏感（所有标签必须要小写），HTML大小写不敏感
+- XHTML要求`html`元素包含`xmlns`属性
+- XHTML要求所有标签(tags)必须要有闭合，所以属性(attributes)必须在括号内而且必须有值
+	- HTML中的空标签是不用闭合标签的比如`<meta>`,`<input>`,`<img>`

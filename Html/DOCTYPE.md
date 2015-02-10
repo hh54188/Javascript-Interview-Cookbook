@@ -1,0 +1,5 @@
+- 如果你想声明你的文档类型，你就要依赖DTD(Document Type Define)来确保你的文档是经过验证的
+- `<!DOCTYPE>`表明了文档的类型（XHTML还是HTML）和版本，还指定了用DTD来对文档
+- 还有两种额外的`DOCTYPE`:`strict`（移除了所有表现型的元素和属性）和`tranditional`
+- `<!DOCTYPE>`還決定了是quirk模式還是標準模式。在quirk模式下，文档不一定按照css标准来布局
+- **什么是quirk模式？？**
