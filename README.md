@@ -18,7 +18,11 @@
 - Javascript的基本数据类型有哪些？null和undefined有什么区别？
 - 值类型和引用类型有什么区别？（提示：聊聊堆和栈）
 - 区分Offset/Client/Scroll/Page这几个坐标系（写一个lazyload即可）
-- 区分pageX/clientX/screenX
+- 区分event.pageX/clientX/screenX
+
+
+<div style="height: 500px;"></div>
+
 
 ## 答案
 
@@ -33,8 +37,7 @@
 2. Closures store references to the outer function’s variables;
 3. Closures Gone Awry（联想for 操作可能会引起的错误，用Immediately Invoked Function Expression (IIFE)解决）
 
-闭包常用来构造私用变量
-
+闭包可以用来构造私有变量，屏蔽细节
 
 
 ### 继承
@@ -80,6 +83,20 @@ var anotherPerson = object(person);
 - 在构造函数中表示实例自己
 - 在事件的回调函数表示DOM元素
 - 在对象的方法中表示该方法所属的对象
+
+## 如何创建对象：
+
+- 字面量(literal): 
+```
+{
+	name: 'Hello'
+}
+```
+- 使用构造函数：
+```
+new Function()
+```
+- 为一些特殊的对象创建
 
 ## 冒泡与捕获
 
@@ -155,7 +172,11 @@ callback('{error: 404}');
 - `scrollTop/scrollLeft` 滚动元素的滚动偏移量
 注意clientHeight和scrollHeight很像，但是不同的浏览器处理起来会不同
 
-##  区分pageX/clientX/screenX
+##  区分event.pageX/clientX/screenX
+
+- pageX/Y gives the coordinates relative to the `<html>` element in CSS pixels.
+- clientX/Y gives the coordinates relative to the **viewport** in CSS pixels.
+- screenX/Y gives the coordinates relative to the **screen** in device pixels.
 
 
 
