@@ -17,12 +17,10 @@
 - JSONP的原理是什么
 - Javascript的基本数据类型有哪些？null和undefined有什么区别？
 - 值类型和引用类型有什么区别？（提示：聊聊堆和栈）
-- 区分Offset/Client/Scroll/Page这几个坐标系（写一个lazyload即可）
+- 区分Offset/Client/Scroll/Page这几个坐标系
 - 区分event.pageX/clientX/screenX
-
-
-<div style="height: 500px;"></div>
-
+- expression VS statement
+- (function () {})() VS function fn() {}() VS (function () {})
 
 ## 答案
 
@@ -177,6 +175,16 @@ callback('{error: 404}');
 - pageX/Y gives the coordinates relative to the `<html>` element in CSS pixels.
 - clientX/Y gives the coordinates relative to the **viewport** in CSS pixels.
 - screenX/Y gives the coordinates relative to the **screen** in device pixels.
+
+
+## `(function () {})()` VS `function fn() {}()` VS `(function () {})`
+
+`function foo() {}`
+- 如果它直接暴露在程序中或者是函数体中，表示定义一个函数
+- 
+
+
+
 
 
 
