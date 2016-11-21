@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>其他算法</title>
+</head>
+<body>
+<script type="text/javascript">
+	/*
+		求最小公倍数(least common multiple)：最小公倍数 = 两整数的乘积 ÷ 最大公约数
+		求最大公约数(largest common divisor)：辗转相除法
+		- a % b得余数c
+		- 若c=0，则b即为两数的最大公约数
+		- 若c≠0，则a=b，b=c，再回去执行
+	*/
+	function max(a, b) {
+		if (b > a) {
+			var temp = a;
+			a = b;
+			b = temp;
+		}
+
+		var c = a % b;
+		if (c === 0) {
+			console.log(b);
+			console.log(a * b / b);
+		}
+		else {
+			a = b;
+			b = c;
+			max(a, b);
+		}
+	}
+
+	max(28, 60)
+</script>
+</body>
+</html>

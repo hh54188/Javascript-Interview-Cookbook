@@ -7,41 +7,32 @@
 <script type="text/javascript">
 	// 升序排列
 	var arr = [90, 23, 44, 12, 9, 87, 60, 77, 23, 0, 27];
+	console.log(arr.toString());
 
 	// 简单：选择排序
 	function selectSort(arr) {
-		var minVal = 0;
-		var minValIndex = 0;
-		var tempValIndex = 0;
-		var tempVal = 0;
-
+		var temp = 0;
 		for (var i = 0; i < arr.length; i++) {
-			minValIndex = i;
-			minVal = arr[minValIndex];
-
-			for (var j = i + 1; j < arr.length; j++) {
-				tempVal = arr[j];
-				if (tempVal < minVal) {
-					minVal = tempVal;
-					minValIndex = j;
+			for (var j = 0; j < arr.length; j++) {
+				if (arr[j] > arr[i]) {
+					temp = arr[i];
+					arr[i] = arr[j];
+					arr[j] = temp;
 				}
 			}
-
-			tempVal = arr[i];
-			arr[i] = minVal;
-			arr[minValIndex] = tempVal;
 		}
-
 		console.log(arr.toString());
 	}
 
 	// 简单：冒泡排序
+	// 注意冒泡排序算法是两个之间进行比较，即 j 和 j - 1进行比较
 	function bubbleSort(arr) {
-		// debugger
 		var tempVal = 0; 
 		for (var i = 0; i < arr.length; i++) {
-			for (var j = i; j < arr.length; j++) {
-				if (arr[j] > arr[j + 1] ) {
+			// 注意这里的 arr.length - 1 - j
+			// 因为第i轮的时候，最后i个数一定是有序的
+			for (var j = 0; j < arr.length - 1 - i; j++) {
+				if (arr[j + 1] < arr[j]) {
 					tempVal = arr[j];
 					arr[j] = arr[j + 1];
 					arr[j + 1] = tempVal;
@@ -52,14 +43,16 @@
 		console.log(arr.toString());
 	}
 
-	// 插入排序
+	// 中等：插入排序
+	// 插入排序算法和冒泡有一点类似，
+	// 都是两个之间进行比较，即 j 和 j - 1进行比较
 	function insertSort(arr) {
 		var tempVal = 0;
-		for (var i = 0; i < arr.length; i++) {
-			for (var j = i + 1; j < arr.length; j++) {
-				if (arr[j] < arr[i]) {
-					tempVal = arr[i];
-					arr[i] = arr[j];
+		for (var i = 1; i < arr.length; i++) {
+			for (var j = i; j >= 1; j--) {
+				if (arr[j] < arr[j - 1]) {
+					tempVal = arr[j - 1];
+					arr[j - 1] = arr[j];
 					arr[j] = tempVal;
 				}
 			}
@@ -67,9 +60,51 @@
 		console.log(arr.toString());
 	}
 
-	// selectSort(arr.slice());
+	// 难：快速排序
+	// https://www.nczonline.net/blog/2012/11/27/computer-science-in-javascript-quicksort/
+	function quickSort() {
+
+	}
+
+
+	// 难：归并排序
+	// https://www.nczonline.net/blog/2012/10/02/computer-science-and-javascript-merge-sort/
+	function merge(left, right){
+	    var result  = [],
+	        il      = 0,
+	        ir      = 0;
+
+	    while (il < left.length && ir < right.length){
+	        if (left[il] < right[ir]){
+	            result.push(left[il++]);
+	        } else {
+	            result.push(right[ir++]);
+	        }
+	    }
+
+	    return result.concat(left.slice(il)).concat(right.slice(ir));
+	}
+
+	function mergeSort(items){
+
+	    // Terminal case: 0 or 1 item arrays don't need sorting
+	    if (items.length < 2) {
+	        return items;
+	    }
+
+	    var middle = Math.floor(items.length / 2),
+	        left    = items.slice(0, middle),
+	        right   = items.slice(middle);
+
+	    return merge(mergeSort(left), mergeSort(right));
+	}
+
+	// 堆排序：
+
+	selectSort(arr.slice());
 	bubbleSort(arr.slice());
-	// insertSort(arr.slice());
+	insertSort(arr.slice());
+	mergeSort(arr.slice());
 </script>
 </body>
 </html>
