@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>排序算法</title>
+</head>
+<body>
+<script type="text/javascript">
+	// 升序排列
+	var arr = [90, 23, 44, 12, 9, 87, 60, 77, 23, 0, 27];
+
+	// 简单：选择排序
+	function selectSort(arr) {
+		var minVal = 0;
+		var minValIndex = 0;
+		var tempValIndex = 0;
+		var tempVal = 0;
+
+		for (var i = 0; i < arr.length; i++) {
+			minValIndex = i;
+			minVal = arr[minValIndex];
+
+			for (var j = i + 1; j < arr.length; j++) {
+				tempVal = arr[j];
+				if (tempVal < minVal) {
+					minVal = tempVal;
+					minValIndex = j;
+				}
+			}
+
+			tempVal = arr[i];
+			arr[i] = minVal;
+			arr[minValIndex] = tempVal;
+		}
+
+		console.log(arr.toString());
+	}
+
+	// 简单：冒泡排序
+	function bubbleSort(arr) {
+		// debugger
+		var tempVal = 0; 
+		for (var i = 0; i < arr.length; i++) {
+			for (var j = i; j < arr.length; j++) {
+				if (arr[j] > arr[j + 1] ) {
+					tempVal = arr[j];
+					arr[j] = arr[j + 1];
+					arr[j + 1] = tempVal;
+				}
+			}
+		}
+
+		console.log(arr.toString());
+	}
+
+	// 插入排序
+	function insertSort(arr) {
+		var tempVal = 0;
+		for (var i = 0; i < arr.length; i++) {
+			for (var j = i + 1; j < arr.length; j++) {
+				if (arr[j] < arr[i]) {
+					tempVal = arr[i];
+					arr[i] = arr[j];
+					arr[j] = tempVal;
+				}
+			}
+		}
+		console.log(arr.toString());
+	}
+
+	selectSort(arr.slice());
+	bubbleSort(arr.slice());
+	// insertSort(arr.slice());
+</script>
+</body>
+</html>

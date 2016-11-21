@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>二叉树的遍历</title>
+</head>
+<body>
+<script type="text/javascript">
+
+	var result = [];
+
+	var sampleTree = {
+		value: 1,
+		lChild: {
+			value: 2,
+			lChild: {
+				value: 4,
+				lChild: {
+					value: 8,
+					lChild: null,
+					rChild: null
+				},
+				rChild: {
+					value: 9,
+					lChild: null,
+					rChild: null
+				}
+			},
+			rChild: {
+				value: 5,
+				lChild: {
+					value: 10,
+					lChild: null,
+					rChild: null
+				},
+				rChild: {
+					value: 11,
+					lChild: null,
+					rChild: null
+				}
+			}
+		},
+		rChild: {
+			value: 3,
+			lChild: {
+				value: 6,
+				lChild: {
+					value: 12,
+					lChild: null,
+					rChild: null
+				},
+				rChild: null
+			},
+			rChild: {
+				value: 7,
+				lChild: null,
+				rChild: null
+			}
+		}
+	}
+
+	function createNode(value, lchild, rchild) {
+		return Object.assgin({}, {
+			value: value,
+			lChild: lchild,
+			rChild: rchild			
+		});
+	}
+
+	// 前序遍历：1, 2, 4, 8, 9, 5, 10, 11, 3, 6, 12, 7
+	// 中序遍历：8, 4, 9, 2, 10, 5, 11, 1, 12, 6, 3, 7
+	// 后序遍历：8, 9, 4, 10, 11, 5, 2, 12, 6, 7, 3, 1
+	function accessTreeInPreOrder(node) {
+		if (!node) {
+			return false;
+		}
+
+		result.push(node.value);
+		accessTreeInPreOrder(node.lChild);
+		accessTreeInPreOrder(node.rChild);
+	}
+
+	function accessTreeInMiddleOrder(node) {
+		if (!node) {
+			return false;
+		}
+		accessTreeInMiddleOrder(node.lChild);
+		result.push(node.value);
+		accessTreeInMiddleOrder(node.rChild);
+	}
+
+	function accessTreeInAfterOrder(node) {
+		if (!node) {
+			return false;
+		}
+
+		accessTreeInAfterOrder(node.lChild);
+		accessTreeInAfterOrder(node.rChild);
+		result.push(node.value);
+	}
+
+	// accessTreeInPreOrder(sampleTree);
+	// accessTreeInMiddleOrder(sampleTree);
+	accessTreeInAfterOrder(sampleTree);
+	console.log(result.toString());
+</script>
+</body>
+</html>
