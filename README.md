@@ -188,7 +188,7 @@ callback('{error: 404}');
     - Cheney’s algorithm(切尼算法)
     - Mark-compact algorithm(标记压缩算法)
 
-- Offset/Client/Scroll/Page
+### Offset/Client/Scroll/Page
 
 - `offsetTop/offsetLeft` 相对于containing block/offsetParent的位移
 - `offsetHeight/offsetWidth` 元素占用的尺寸（包括border宽度，滚动栏宽度）
@@ -256,10 +256,10 @@ callback('{error: 404}');
 
 - `defer`: 当浏览器遇见带有defer属性的script标签时，开始下载脚本，并且不会阻塞浏览器进程。即使下载完成之后也不会立即执行，直到DOM加载完成之后(DOMContentloaded事件触发时)，或者在onload事件中（但是比onload前一些）
     - defer能够保证脚本按顺序执行
-    - defer对缺少src的脚本和动态添加的脚本无效
+    - defer对缺少src的脚本和**动态添加的脚本无效**
 
 - `asyc`: async属性与defer属性类似，能够让浏览器同时下载多个脚本而不阻塞浏览器。
-不同的是对动态添加的脚本同样有效。并且一旦下载完成后会立即执行，对执行的顺序没有保证: 
+不同的是**对动态添加的脚本同样有效**。并且一旦下载完成后会立即执行，对执行的顺序没有保证: 
 
 
 
