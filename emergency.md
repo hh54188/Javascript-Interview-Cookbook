@@ -3,6 +3,10 @@
 将数组转化为数组：`Array.prototype.slice.call`
 检测数据类型：`Object.prototype.toString.call`
 
+## 什么是浮动
+
+Floated elements are first laid out according to the normal flow, then taken out of the normal flow and sent as far to the right or left (depending on which value is applied) of the parent element. 
+
 ## BFC (Block Formatting Context) / haslayout
 
 什么是BFC(Block Formatting Context)，

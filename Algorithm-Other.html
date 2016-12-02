@@ -6,6 +6,23 @@
 <body>
 <script type="text/javascript">
 	/*
+		斐波那契数列：1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144
+		F(n)=F(n-1)+F(n-2)
+	 */
+	function Fibonacci(n) {
+		var result;
+		if (n <= 1) {
+			result = n;
+		} else {
+			result = Fibonacci(n - 1) + Fibonacci(n - 2);
+		}
+		return result;
+	}
+
+	var result = Fibonacci(10);
+	console.log(result);
+
+	/*
 		求最小公倍数(least common multiple)：最小公倍数 = 两整数的乘积 ÷ 最大公约数
 		求最大公约数(largest common divisor)：辗转相除法
 		- a % b得余数c
