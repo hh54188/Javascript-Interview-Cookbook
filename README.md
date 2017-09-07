@@ -15,12 +15,14 @@
 - 如何进行优化？
     - 组件中的key属性有什么用？
 - Component 与 Element 与 Instance 的区别
-- **如果你使用过Redux与Vuex的话，聊聊他们的区别与你的心得**
+- **Flux VS Vuex**
+    - Flux结构与Vuex架构有什么区别？
     - Vue.js 的双向绑定是如何实现的？
-- 解释一下Redux的架构
-    - Redux中的store和flux中的有什么不同？
+- **Flux VS Redux**
+    - Flux结构与Redux架构的区别（store）
+    - 解释一下connect的作用
     - 解释一下Redux的中间件
-    - redux-thunk 和 connet 解决了什么问题
+    - redux-thunk的作用是什么
 - Webpack如何打包输出多个文件？
     - webpack打包时如何工作的？
         - 如何解决循环引用的问题
