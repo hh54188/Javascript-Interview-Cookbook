@@ -19,10 +19,12 @@
     - Flux结构与Vuex架构有什么区别？
     - Vue.js 的双向绑定是如何实现的？
 - **Flux VS Redux**
-    - Flux结构与Redux架构的区别（store）
+    - Flux结构与Redux架构的区别
+        - 解释一下reducer，比如reducer有哪些特征
     - 解释一下connect的作用
     - 解释一下Redux的中间件
-    - redux-thunk的作用是什么
+        - 中间件可以解决什么问题？
+        - redux-thunk的作用是什么
 - Webpack如何打包输出多个文件？
     - webpack打包时如何工作的？
         - 如何解决循环引用的问题
@@ -30,6 +32,8 @@
     - loader和plugin的差别
     - 你觉得使用过什么高级技巧吗？
 - （开放问题）React的生态你使用过哪些类库
+    - Immutable
+    - Redux-thunk
 
 ## Personal && Specific && 
 
@@ -56,3 +60,6 @@
     - React 官方提倡 Hight Order Component，或者使用 Container Component，将 Container Component 与 Presentional Component 分离
     - 在实现内部使用设计模式
     - 保持好的代码习惯
+
+![vuex](./images/vuex.png)
+![redux](./images/redux.png)
