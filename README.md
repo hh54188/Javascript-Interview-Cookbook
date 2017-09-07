@@ -61,5 +61,5 @@
     - 在实现内部使用设计模式
     - 保持好的代码习惯
 
-![vuex](./images/vuex.png)
-![redux](./images/redux.png)
+<img src="./images/vuex.png" width="100%" >
+<img src="./images/redux.png" width="100%" >
