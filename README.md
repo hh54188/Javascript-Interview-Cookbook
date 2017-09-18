@@ -2,9 +2,10 @@
 
 ## 重点基础题
 
+- 什么是闭包？有什么作用？（什么是作用域链？）
 - 解释Javascript的继承（原型链）的原理
-    - 如何实现封装（Encapsulation）？
     - 如何实现多态（Polymorphism）？
+    - 如何实现封装（Encapsulation）？
 - 为什么CSS3的效率更高？
 - 为什么React的Virtual DOM的效率更高？
 - setTimeout 与 setInterval
@@ -44,7 +45,7 @@
     - Immutable
     - Redux-thunk
 
-## 部分答案
+## 重点答案
 
 ### 如何设计一个好的组件
 
@@ -61,5 +62,50 @@
     - 在实现内部使用设计模式
     - 保持好的代码习惯
 
+### Vuex与Redux架构
+
 <img src="./images/vuex.png" width="100%" >
 <img src="./images/redux.png" width="100%" >
+
+### 什么是闭包
+
+- 闭包是指函数能够访问另一个函数内的变量 (Closures are functions that have access to variables from another function’s scope, Professional Javascript for Web Developers 3rd Edition)
+- 闭包是指当函数定义时能够访问并且操纵函数外部的变量 (A closure is the scope created when a function is declared that allows the function to access and manipulate variables that are external to that function.(Secrets of the Javascript Ninja))
+
+### 继承的原理
+
+<img src="./images/prototype-chain.png" width="100%" >
+
+在Javascript中每一个对象都有一个**原型（Prototype）**，当你想访问一个对象的属性时，Javascript首先会在对象自己内部查找（hasOwnPrototype），如果失败了会去对象的原型上查找，如果还是查找失败了，则会继续在原型的原型对象上查找。并以此类推。`Object.create`用于创建一个prototype是指定对象的空对象
+
+每一个（构造）函数也有自己的prototype，prototype指向（或者说是）一个对象，当使用new关键字调用构造函数生成实例后，实例的prototype即指向函数的prototype所指向的对象。
+
+所有的prototype属性都有一个名为constructor的属性，指向拥有prototype的函数。每当用构造函数创建一个实例时，实例的[[Prototype]]属性便指向构造函数的prototype属性。每一个对象都有一个__proto__的属性，表示实例与构造函数的prototype属性之间的关系（而并非实例与构造函数之间的关系）
+
+### 多态
+
+首先什么是多态：同一操作作用于不同的对象，可以有不同的解释，产生不同的执行结果。比如对黑白打印机执行打印操作后，打印效果是黑白的，而对彩色打印机进行打印操作后，打印效果是彩色的。
+
+多态最常见的2种实现方式：1.覆盖，2.重载
+
+覆盖指子类重新定义父类方法，这正好就是基于prototype继承的玩法，这不就多态了么。
+重载是指多个同名但参数不同的方法，这个JavaScript确实没有。[参考](https://www.zhihu.com/question/33596850)
+
+### 封装
+
+通过IIFE（Immediately Invoking Function Expression）实现，同时也是利用闭包和scope chain（在Javascript中，变量只能是函数级别或者全局级别的，并且函数内可以的可以访问函数外部的，外部不能访问内部的）。
+
+IIFE把私有变量定义在函数内部，执行完毕之后返回访问器。所以你只能通过访问器去访问变量，而无法直接访问变量
+
+```javascript
+(function() {
+  const private = 'private';
+  return {
+      getter() {
+          return private;
+      }
+  }
+})(this);
+```
+
+
