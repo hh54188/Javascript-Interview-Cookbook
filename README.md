@@ -3,7 +3,7 @@
 ## 重点基础题
 
 - 什么是闭包？有什么作用？（什么是作用域链？）
-- 解释Javascript的继承（原型链）的原理
+- 解释Javascript的继承（原型链）的原理（对象之间如何继承，构造函数之间如何继承）
     - 如何实现多态（Polymorphism）？
     - 如何实现封装（Encapsulation）？
 - 为什么CSS3的效率更高？
@@ -19,6 +19,7 @@
 - 组件的生命周期有哪些？
     - 当某些第三方类库想对DOM初始化，或者进行远程数据加载时，应该在哪个周期中完成？
     - 在哪些声明周期中可以修改组件的state？
+    - 父元素和子元素的`componentWillMount`、`componentDidMount`、`render`的调用顺序是什么样的
 - **不同父节点的组件需要对彼此的状态进行改变时应该实现？**
     - 如何设计出一个好的Flux架构
     - 如何设计出一个好的React组件
@@ -81,6 +82,8 @@
 每一个（构造）函数也有自己的prototype，prototype指向（或者说是）一个对象，当使用new关键字调用构造函数生成实例后，实例的prototype即指向函数的prototype所指向的对象。
 
 所有的prototype属性都有一个名为constructor的属性，指向拥有prototype的函数。每当用构造函数创建一个实例时，实例的[[Prototype]]属性便指向构造函数的prototype属性。每一个对象都有一个__proto__的属性，表示实例与构造函数的prototype属性之间的关系（而并非实例与构造函数之间的关系）
+
+构造函数的继承的最佳方案是 `subType.prototype = Object.create(superType.prototype);`
 
 ### 多态
 
